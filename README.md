@@ -7,7 +7,7 @@
 > Who will use it?  
 > Why is this project of interest to you?
 
-this project is an easy-to-use desktop expense tracker.
+This project is an easy-to-use desktop expense tracker.
 The user keeps track of their spending by recording entries of their
 daily expenses into this application. The spendings are organized into
 categories such as food, clothing, or tuition. All entries pertaining to
