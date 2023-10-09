@@ -23,7 +23,7 @@ class SpendingEntryTest {
     }
 
     @Test
-    public void getDaysPriorToTodayToday() {
+    public void getDaysPriorToTodaySameDay() {
         assertEquals(0, testSE.getDaysPriorToToday());
     }
 
