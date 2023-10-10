@@ -7,12 +7,12 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SpendingEntryTest {
-    SpendingEntry testSE;
+class ExpenseEntryTest {
+    ExpenseEntry testSE;
 
     @BeforeEach
     public void runBefore() {
-        testSE = new SpendingEntry(100);
+        testSE = new ExpenseEntry(100);
     }
 
     @Test

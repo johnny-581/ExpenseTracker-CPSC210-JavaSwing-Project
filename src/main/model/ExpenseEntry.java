@@ -2,12 +2,13 @@ package model;
 
 import java.time.LocalDate;
 
-public class SpendingEntry {
+public class ExpenseEntry {
     private double amount;
     private LocalDate date;
     private String place;
+    private String category;
 
-    public SpendingEntry(double amount) {
+    public ExpenseEntry(double amount) {
         this.amount = amount;
         this.date = LocalDate.now();
     }
@@ -24,6 +25,10 @@ public class SpendingEntry {
         this.place = place;
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public double getAmount() {
         return amount;
     }
@@ -34,6 +39,10 @@ public class SpendingEntry {
 
     public String getPlace() {
         return place;
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     public int getDaysPriorToToday() {

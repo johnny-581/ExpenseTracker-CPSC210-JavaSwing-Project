@@ -9,21 +9,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CategoryTest {
     Category testCategory;
-    SpendingEntry SE1;
-    SpendingEntry SE2;
-    SpendingEntry SE3;
+    ExpenseEntry SE1;
+    ExpenseEntry SE2;
+    ExpenseEntry SE3;
 
     @BeforeEach
     public void runBefore() {
         testCategory = new Category("food");
-        SE1 = new SpendingEntry(100);
-        SE2 = new SpendingEntry(20);
-        SE3 = new SpendingEntry(5.5);
+        SE1 = new ExpenseEntry(100);
+        SE2 = new ExpenseEntry(20);
+        SE3 = new ExpenseEntry(5.5);
     }
 
     @Test
     public void testConstructor() {
-        assertEquals("food", testCategory.getLabel());
+        assertEquals("food", testCategory.getName());
         assertEquals(0, testCategory.getEntries().size());
     }
 
@@ -31,7 +31,7 @@ public class CategoryTest {
     public void testAddOne() {
         testCategory.add(SE1);
 
-        List<SpendingEntry> entries = testCategory.getEntries();
+        List<ExpenseEntry> entries = testCategory.getEntries();
         assertEquals(1, entries.size());
         assertEquals(SE1, entries.get(0));
     }
@@ -42,7 +42,7 @@ public class CategoryTest {
         testCategory.add(SE2);
         testCategory.add(SE3);
 
-        List<SpendingEntry> entries = testCategory.getEntries();
+        List<ExpenseEntry> entries = testCategory.getEntries();
         assertEquals(3, entries.size());
         assertEquals(SE1, entries.get(0));
         assertEquals(SE2, entries.get(1));
@@ -57,7 +57,7 @@ public class CategoryTest {
 
         testCategory.remove(SE2);
 
-        List<SpendingEntry> entries = testCategory.getEntries();
+        List<ExpenseEntry> entries = testCategory.getEntries();
         assertEquals(2, entries.size());
         assertEquals(SE1, entries.get(0));
         assertEquals(SE3, entries.get(1));
@@ -73,7 +73,7 @@ public class CategoryTest {
         testCategory.remove(SE2);
         testCategory.remove(SE3);
 
-        List<SpendingEntry> entries = testCategory.getEntries();
+        List<ExpenseEntry> entries = testCategory.getEntries();
         assertEquals(0, entries.size());
     }
 
