@@ -2,14 +2,14 @@ package model;
 
 import java.time.LocalDate;
 
-public class ExpenseEntry {
+public class Expense {
     private double amount;
     private LocalDate date;
     private String place;
     private String category;
 
-    public ExpenseEntry(double amount) {
-        this.amount = amount;
+    public Expense() {
+        this.amount = 0;
         this.date = LocalDate.now();
     }
 

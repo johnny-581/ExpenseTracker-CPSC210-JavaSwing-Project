@@ -9,29 +9,29 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CategoryTest {
     Category testCategory;
-    ExpenseEntry SE1;
-    ExpenseEntry SE2;
-    ExpenseEntry SE3;
+    Expense SE1;
+    Expense SE2;
+    Expense SE3;
 
     @BeforeEach
     public void runBefore() {
         testCategory = new Category("food");
-        SE1 = new ExpenseEntry(100);
-        SE2 = new ExpenseEntry(20);
-        SE3 = new ExpenseEntry(5.5);
+        SE1 = new Expense(100);
+        SE2 = new Expense(20);
+        SE3 = new Expense(5.5);
     }
 
     @Test
     public void testConstructor() {
-        assertEquals("food", testCategory.getName());
-        assertEquals(0, testCategory.getEntries().size());
+        assertEquals("food", testCategory.getLabel());
+        assertEquals(0, testCategory.getExpenses().size());
     }
 
     @Test
     public void testAddOne() {
         testCategory.add(SE1);
 
-        List<ExpenseEntry> entries = testCategory.getEntries();
+        List<Expense> entries = testCategory.getExpenses();
         assertEquals(1, entries.size());
         assertEquals(SE1, entries.get(0));
     }
@@ -42,7 +42,7 @@ public class CategoryTest {
         testCategory.add(SE2);
         testCategory.add(SE3);
 
-        List<ExpenseEntry> entries = testCategory.getEntries();
+        List<Expense> entries = testCategory.getExpenses();
         assertEquals(3, entries.size());
         assertEquals(SE1, entries.get(0));
         assertEquals(SE2, entries.get(1));
@@ -57,7 +57,7 @@ public class CategoryTest {
 
         testCategory.remove(SE2);
 
-        List<ExpenseEntry> entries = testCategory.getEntries();
+        List<Expense> entries = testCategory.getExpenses();
         assertEquals(2, entries.size());
         assertEquals(SE1, entries.get(0));
         assertEquals(SE3, entries.get(1));
@@ -73,7 +73,7 @@ public class CategoryTest {
         testCategory.remove(SE2);
         testCategory.remove(SE3);
 
-        List<ExpenseEntry> entries = testCategory.getEntries();
+        List<Expense> entries = testCategory.getExpenses();
         assertEquals(0, entries.size());
     }
 
@@ -81,7 +81,7 @@ public class CategoryTest {
     public void testGetTotalOne() {
         testCategory.add(SE1);
 
-        assertEquals(100, testCategory.getTotal());
+        assertEquals(100, testCategory.totalAmount());
     }
 
     @Test
@@ -90,6 +90,6 @@ public class CategoryTest {
         testCategory.add(SE2);
         testCategory.add(SE3);
 
-        assertEquals(100 + 20 + 5.5, testCategory.getTotal());
+        assertEquals(100 + 20 + 5.5, testCategory.totalAmount());
     }
 }
