@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class ExpenseTrackerApp {
     private static final String LABEL_OF_NO_CATEGORY = "none";
 
-    private ArrayList<Expense> allExpenses; //!!!
+    private List<Expense> allExpenses;
     private List<Category> allCategories;
     private Category expensesWithoutCategory;
     private Scanner input;
@@ -25,6 +25,14 @@ public class ExpenseTrackerApp {
 
         createExamples(); // temporary
         runExpenseTracker();
+    }
+
+    public List<Expense> getAllExpenses() {
+        return allExpenses;
+    }
+
+    public List<Category> getAllCategories() {
+        return allCategories;
     }
 
     public void runExpenseTracker() {
