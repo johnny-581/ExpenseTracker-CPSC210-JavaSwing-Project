@@ -8,30 +8,31 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ExpenseTest {
-    Expense testSE;
+    Expense E1;
 
     @BeforeEach
     public void runBefore() {
-        testSE = new Expense(100);
+        E1 = new Expense();
+        E1.setAmount(100);
     }
 
     @Test
     public void testConstructor() {
-        assertEquals(100, testSE.getAmount());
-        assertEquals(LocalDate.now(), testSE.getDate());
-        assertNull(testSE.getPlace());
+        assertEquals(100, E1.getAmount());
+        assertEquals(LocalDate.now(), E1.getDate());
+        assertNull(E1.getPlace());
     }
 
     @Test
-    public void getDaysPriorToTodaySameDay() {
-        assertEquals(0, testSE.getDaysPriorToToday());
+    public void testGetDaysPriorToTodaySameDay() {
+        assertEquals(0, E1.getDaysPriorToToday());
     }
 
     @Test
-    public void getDaysPriorToToday3DaysAgo() {
+    public void testGetDaysPriorToToday3DaysAgo() {
         String threeDaysPrior = LocalDate.now().minusDays(3).toString();
 
-        testSE.setDate(threeDaysPrior);
-        assertEquals(3, testSE.getDaysPriorToToday());
+        E1.setDate(threeDaysPrior);
+        assertEquals(3, E1.getDaysPriorToToday());
     }
 }
