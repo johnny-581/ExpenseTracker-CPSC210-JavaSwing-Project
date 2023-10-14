@@ -13,8 +13,7 @@ daily expenses into this application. The spendings are organized into
 categories such as food, clothing, or tuition. All entries pertaining to
 a particular category can be viewed by clicking on the corresponding
 category icon on the homepage. On the homepage, there will also be a list
-of spending entries organized in chronological order with the most
-recent spending at the top, as well as a field where the user can input
+of spending entries, as well as a field where the user can input
 a new entry. Additionally, here could also be a display of the total
 spending of the week and related statistical graphs.
 
