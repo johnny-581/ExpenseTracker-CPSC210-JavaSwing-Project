@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class ExpenseTrackerApp {
     private static final String LABEL_OF_NO_CATEGORY = "none";
 
-    private List<Expense> allExpenses; //!!!
+    private ArrayList<Expense> allExpenses; //!!!
     private List<Category> allCategories;
     private Category expensesWithoutCategory;
     private Scanner input;
@@ -446,12 +446,18 @@ public class ExpenseTrackerApp {
         Expense E3 = new Expense();
         Expense E4 = new Expense();
         Expense E5 = new Expense();
-        allExpenses = List.of(E1, E2, E3, E4, E5);
+        allExpenses.add(E1);
+        allExpenses.add(E2);
+        allExpenses.add(E3);
+        allExpenses.add(E4);
+        allExpenses.add(E5);
 
         Category C1 = new Category("grocery");
         Category C2 = new Category("clothing");
         Category C3 = new Category("rent");
-        allCategories = List.of(C1, C2, C3);
+        allCategories.add(C1);
+        allCategories.add(C2);
+        allCategories.add(C3);
 
         E1.setAmount(100);
         E1.setPlace("no frills");
