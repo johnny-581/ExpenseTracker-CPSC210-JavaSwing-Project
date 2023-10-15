@@ -163,42 +163,43 @@ public class ExpenseTrackerApp {
 
         String selection = "";
         while (!(selection.equals("f"))) {
-            modifyExpensesDisplayOptions();
-            selection = input.next().toLowerCase();
+            System.out.println("\na -> change its amount");
+            System.out.println("d -> change its date");
+            System.out.println("p -> change its place");
+            System.out.println("c -> change its category");
+            System.out.println("x -> delete it");
+            System.out.println("f -> finish modification");
 
-            switch (selection) {
-                case "a":
-                    expenseSetAmount(expense);
-                    displayModifiedExpense(expense);
-                    break;
-                case "d":
-                    expenseSetDate(expense);
-                    displayModifiedExpense(expense);
-                    break;
-                case "p":
-                    expenseSetPlace(expense);
-                    displayModifiedExpense(expense);
-                    break;
-                case "c":
-                    expenseSetCategory(expense);
-                    displayModifiedExpense(expense);
-                    break;
-                case "x":
-                    deleteExpense(expense);
-                    selection = "f";
-                    break;
-            }
+            selection = input.next().toLowerCase();
+            modifyExpensesHandleSelection(selection, expense);
         }
     }
 
-    // EFFECTS: displays options for modifyExpenses
-    private void modifyExpensesDisplayOptions() {
-        System.out.println("\na -> change its amount");
-        System.out.println("d -> change its date");
-        System.out.println("p -> change its place");
-        System.out.println("c -> change its category");
-        System.out.println("x -> delete it");
-        System.out.println("f -> finish modification");
+    // MODIFIES: this, expense
+    // EFFECTS: handles user selection for modifyExpenses
+    private void modifyExpensesHandleSelection(String selection, Expense expense) {
+        switch (selection) {
+            case "a":
+                expenseSetAmount(expense);
+                displayModifiedExpense(expense);
+                break;
+            case "d":
+                expenseSetDate(expense);
+                displayModifiedExpense(expense);
+                break;
+            case "p":
+                expenseSetPlace(expense);
+                displayModifiedExpense(expense);
+                break;
+            case "c":
+                expenseSetCategory(expense);
+                displayModifiedExpense(expense);
+                break;
+            case "x":
+                deleteExpense(expense);
+                selection = "f";
+                break;
+        }
     }
 
     // MODIFIES: this
