@@ -42,8 +42,8 @@ public class WeeklyStatistics {
             totalAmount = week.getTotalAmount();
             numOfExpenses = week.getNumOfExpenses();
 
-            System.out.println(" - in the week from " + startDate + " to " + endDate + ", " +
-                    "you spent $" + totalAmount + " (" + numOfExpenses + " expenses)");
+            System.out.println(" - in the week from " + startDate + " to " + endDate + ", "
+                    + "you spent $" + totalAmount + " (" + numOfExpenses + " expenses)");
         }
     }
 
@@ -77,7 +77,7 @@ public class WeeklyStatistics {
 
     // EFFECTS: sort the given list of expenses and chronologically from most recent to most distant
     private List<Expense> sortExpenses(List<Expense> expenses) {
-        expenses.sort(Comparator.comparing(Expense :: getDate));
+        expenses.sort(Comparator.comparing(Expense::getDate));
         Collections.reverse(expenses);
         return expenses;
     }

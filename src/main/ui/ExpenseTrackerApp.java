@@ -23,7 +23,7 @@ public class ExpenseTrackerApp {
         expensesWithoutCategory = new Category(LABEL_OF_NO_CATEGORY); // not in allCategories
         input = new Scanner(System.in);
 
-        CreateExamples examples = new CreateExamples(allExpenses, allCategories); // temporary
+        new CreateExamples(allExpenses, allCategories); // can be removed
         runExpenseTracker();
     }
 
@@ -163,12 +163,7 @@ public class ExpenseTrackerApp {
 
         String selection = "";
         while (!(selection.equals("f"))) {
-            System.out.println("\na -> change its amount");
-            System.out.println("d -> change its date");
-            System.out.println("p -> change its place");
-            System.out.println("c -> change its category");
-            System.out.println("x -> delete it");
-            System.out.println("f -> finish modification");
+            modifyExpensesDisplayOptions();
             selection = input.next().toLowerCase();
 
             switch (selection) {
@@ -194,6 +189,16 @@ public class ExpenseTrackerApp {
                     break;
             }
         }
+    }
+
+    // EFFECTS: displays options for modifyExpenses
+    private void modifyExpensesDisplayOptions() {
+        System.out.println("\na -> change its amount");
+        System.out.println("d -> change its date");
+        System.out.println("p -> change its place");
+        System.out.println("c -> change its category");
+        System.out.println("x -> delete it");
+        System.out.println("f -> finish modification");
     }
 
     // MODIFIES: this
@@ -250,12 +255,12 @@ public class ExpenseTrackerApp {
 
     // EFFECTS: displays the total expense of each week
     private void displayWeeklyStatistics() {
-        WeeklyStatistics stat = new WeeklyStatistics(allExpenses);
+        new WeeklyStatistics(allExpenses);
     }
 
     // EFFECTS: displays the percentage of money spent in each category
     private void displayCategoryStatistics() {
-        CategoryStatistics stats = new CategoryStatistics(allCategories, allExpenses);
+        new CategoryStatistics(allCategories, allExpenses);
     }
 
     // MODIFIES: this, expense
@@ -464,7 +469,7 @@ public class ExpenseTrackerApp {
     // MODIFIES: expenses
     // EFFECTS: sort the given list of expenses chronologically from most recent to most distant
     private void sortExpenses(List<Expense> expenses) {
-        expenses.sort(Comparator.comparing(Expense :: getDate));
+        expenses.sort(Comparator.comparing(Expense::getDate));
         Collections.reverse(expenses);
     }
 

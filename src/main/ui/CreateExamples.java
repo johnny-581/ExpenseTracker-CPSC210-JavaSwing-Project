@@ -12,8 +12,17 @@ public class CreateExamples {
     List<Category> allCategories;
     LocalDate today;
 
+    Expense expense1;
+    Expense expense2;
+    Expense expense3;
+    Expense expense4;
+    Expense expense5;
+    Category category1;
+    Category category2;
+    Category category3;
+
     // EFFECTS: Takes in allExpenses and allCategories as parameters and sets them as fields
-    public CreateExamples (List<Expense> allExpenses, List<Category> allCategories) {
+    public CreateExamples(List<Expense> allExpenses, List<Category> allCategories) {
         this.allExpenses = allExpenses;
         this.allCategories = allCategories;
         this.today = LocalDate.now();
@@ -22,51 +31,62 @@ public class CreateExamples {
 
     // EFFECTS: creates example expenses and categories containing them
     public void create() {
-        Expense E1 = new Expense();
-        Expense E2 = new Expense();
-        Expense E3 = new Expense();
-        Expense E4 = new Expense();
-        Expense E5 = new Expense();
-        allExpenses.add(E1);
-        allExpenses.add(E2);
-        allExpenses.add(E3);
-        allExpenses.add(E4);
-        allExpenses.add(E5);
+        expense1 = new Expense();
+        expense2 = new Expense();
+        expense3 = new Expense();
+        expense4 = new Expense();
+        expense5 = new Expense();
+        allExpenses.add(expense1);
+        allExpenses.add(expense2);
+        allExpenses.add(expense3);
+        allExpenses.add(expense4);
+        allExpenses.add(expense5);
 
-        Category C1 = new Category("grocery");
-        Category C2 = new Category("clothing");
-        Category C3 = new Category("rent");
-        allCategories.add(C1);
-        allCategories.add(C2);
-        allCategories.add(C3);
+        category1 = new Category("grocery");
+        category2 = new Category("clothing");
+        category3 = new Category("rent");
+        allCategories.add(category1);
+        allCategories.add(category2);
+        allCategories.add(category3);
 
-        E1.setAmount(100);
-        E1.setPlace("no frills");
-        E1.setCategory("grocery");
-        C1.add(E1);
+        setExpenses();
+    }
 
-        E2.setAmount(20);
-        E2.setDate(today.minusMonths(1).toString());
-        E2.setPlace("save on food");
-        E2.setCategory("grocery");
-        C1.add(E2);
+    // EFFECTS: sets example expenses
+    private void setExpenses() {
+        expense1.setAmount(100);
+        expense1.setPlace("no frills");
+        expense1.setCategory("grocery");
 
-        E3.setAmount(55);
-        E3.setDate(today.minusDays(7).toString());
-        E3.setPlace("ubc book store");
-        E3.setCategory("clothing");
-        C2.add(E3);
+        expense2.setAmount(20);
+        expense2.setDate(today.minusMonths(1).toString());
+        expense2.setPlace("save on food");
+        expense2.setCategory("grocery");
 
-        E4.setAmount(210);
-        E4.setDate(today.minusDays(3).toString());
-        E4.setPlace("lululemon");
-        E4.setCategory("clothing");
-        C2.add(E4);
+        expense3.setAmount(55);
+        expense3.setDate(today.minusDays(7).toString());
+        expense3.setPlace("ubc book store");
+        expense3.setCategory("clothing");
 
-        E5.setAmount(1000);
-        E5.setDate(today.minusDays(6).toString());
-        E5.setPlace("ubc housing");
-        E5.setCategory("rent");
-        C3.add(E5);
+        expense4.setAmount(210);
+        expense4.setDate(today.minusDays(3).toString());
+        expense4.setPlace("lululemon");
+        expense4.setCategory("clothing");
+
+        expense5.setAmount(1000);
+        expense5.setDate(today.minusDays(6).toString());
+        expense5.setPlace("ubc housing");
+        expense5.setCategory("rent");
+
+        addExpensesToCategories();
+    }
+
+    // EFFECTS: adds example expenses to categories
+    private void addExpensesToCategories() {
+        category1.add(expense1);
+        category1.add(expense2);
+        category2.add(expense3);
+        category2.add(expense4);
+        category3.add(expense5);
     }
 }
