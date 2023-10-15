@@ -3,46 +3,48 @@ package ui;
 import model.Category;
 import model.Expense;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ExpenseTrackerApp {
     private static final String LABEL_OF_NO_CATEGORY = "none";
+    private static final String NAME_OF_NO_PLACE = "unknown";
 
     private List<Expense> allExpenses;
     private List<Category> allCategories;
     private Category expensesWithoutCategory;
     private Scanner input;
 
+    // MODIFIES: this
+    // EFFECTS: initiates the expense tracker application; creates example expenses and categories;
+    //          and runs it
     public ExpenseTrackerApp() {
         allExpenses = new ArrayList<>();
         allCategories = new ArrayList<>();
         expensesWithoutCategory = new Category(LABEL_OF_NO_CATEGORY); // not in allCategories
         input = new Scanner(System.in);
 
-        createExamples(); // temporary
+        CreateExamples examples = new CreateExamples(allExpenses, allCategories); // temporary
         runExpenseTracker();
     }
 
-    public List<Expense> getAllExpenses() {
-        return allExpenses;
+    // EFFECTS: displays main menu with options
+    private void displayMenu() {
+        System.out.println("\nSelect from:");
+        System.out.println("\tn -> record new expense");
+        System.out.println("\te -> see all expenses");
+        System.out.println("\tc -> see all expense categories");
+        System.out.println("\tq -> quit");
     }
 
-    public List<Category> getAllCategories() {
-        return allCategories;
-    }
-
+    // MODIFIES: this
+    // EFFECTS: processes user input on main menu
     public void runExpenseTracker() {
         boolean keepGoing = true;
         String command;
 
         while (keepGoing) {
             displayMenu();
-            command = input.next();
-            command = command.toLowerCase();
+            command = input.next().toLowerCase();
 
             if (command.equals("q")) {
                 keepGoing = false;
@@ -54,14 +56,8 @@ public class ExpenseTrackerApp {
         System.out.println("\nGoodbye");
     }
 
-    private void displayMenu() {
-        System.out.println("\nSelect from:");
-        System.out.println("\tn -> record new expense");
-        System.out.println("\te -> see all expenses");
-        System.out.println("\tc -> see all expense categories");
-        System.out.println("\tq -> quit");
-    }
-
+    // MODIFIES: this
+    // EFFECTS: processes user input on main menu, provides actions for each command
     private void processCommand(String command) {
         switch (command) {
             case "n":
@@ -87,6 +83,8 @@ public class ExpenseTrackerApp {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a new expense with amount, date, place, and category
     private void newExpense() {
         Expense expense = new Expense();
         allExpenses.add(expense);
@@ -98,7 +96,7 @@ public class ExpenseTrackerApp {
         if (yes) {
             expenseSetPlace(expense);
         } else {
-            expense.setPlace("unknown");
+            expense.setPlace(NAME_OF_NO_PLACE);
         }
 
         System.out.println("Do you want to add this expense to a category?");
@@ -114,6 +112,8 @@ public class ExpenseTrackerApp {
         displayExpenseSummary(expense);
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays a list of all expenses and provides options to user
     private void seeAllExpenses() {
         System.out.println("Here is a list of all expenses:");
         displayExpenses(allExpenses);
@@ -127,11 +127,13 @@ public class ExpenseTrackerApp {
             if (selection.equals("m")) {
                 modifyExpenses(allExpenses);
             } else if (selection.equals("s")) {
-                weeklyStatistics();
+                displayWeeklyStatistics();
             }
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays a list of all categories and provides options to user
     private void seeAllCategories() {
         String selection = "";
         while (!(selection.equals("m") || selection.equals("s"))) {
@@ -146,11 +148,14 @@ public class ExpenseTrackerApp {
             } else if (selection.equals("n")) {
                 newCategory();
             } else if (selection.equals("s")) {
-                categoryStatistics();
+                displayCategoryStatistics();
             }
         }
     }
 
+    // MODIFIES: this, expenses
+    // EFFECTS: let the user select an expense from the given list of expenses
+    //          and provides options to modify the selected expense
     private void modifyExpenses(List<Expense> expenses) {
         Expense expense = selectExpense(expenses);
         System.out.println("You have selected the following expense:");
@@ -191,6 +196,9 @@ public class ExpenseTrackerApp {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: let the user select a category from all allCategories and provides options
+    //          to modify the selected category
     private void modifyCategories() {
         Category category = selectCategory();
 
@@ -220,12 +228,16 @@ public class ExpenseTrackerApp {
         }
     }
 
+    // MODIFIES: this, category
+    // EFFECTS: displays a list of expenses in the given category and provides option to
+    //          modify those expenses
     private void seeExpensesInCategory(Category category, String categoryLabel) {
         String selection = "";
         while (!selection.equals("b")) {
             System.out.println("\nExpenses in the category " + categoryLabel + ":");
             List<Expense> categoryExpenses = category.getExpenses();
             displayExpenses(categoryExpenses);
+
             System.out.println("\nm -> modify");
             System.out.println("b -> go back");
             selection = input.next().toLowerCase();
@@ -236,13 +248,18 @@ public class ExpenseTrackerApp {
         }
     }
 
-    private void weeklyStatistics() {
+    // EFFECTS: displays the total expense of each week
+    private void displayWeeklyStatistics() {
+        WeeklyStatistics stat = new WeeklyStatistics(allExpenses);
     }
 
-    private void categoryStatistics() {
+    // EFFECTS: displays the percentage of money spent in each category
+    private void displayCategoryStatistics() {
         CategoryStatistics stats = new CategoryStatistics(allCategories, allExpenses);
     }
 
+    // MODIFIES: this, expense
+    // EFFECTS: deletes the given expense
     private void deleteExpense(Expense expense) {
         allExpenses.remove(expense);
         String categoryLabel = expense.getCategory();
@@ -255,6 +272,8 @@ public class ExpenseTrackerApp {
         System.out.println("Expense deleted");
     }
 
+    // MODIFIES: this, category
+    // EFFECTS: deletes the given category
     private void deleteCategory(Category category) {
         allCategories.remove(category);
 
@@ -265,24 +284,32 @@ public class ExpenseTrackerApp {
         System.out.println("Category deleted");
     }
 
+    // MODIFIES: this, expense
+    // EFFECTS: let the user set the amount of the given expense
     private void expenseSetAmount(Expense expense) {
         System.out.println("Enter the amount you spent: $");
         double amount = input.nextDouble();
         expense.setAmount(amount);
     }
 
+    // MODIFIES: this, expense
+    // EFFECTS: let the user set the date of the given expense
     private void expenseSetDate(Expense expense) {
         System.out.println("Entre a date (YYYY-MM-DD): ");
         String date = input.next();
         expense.setDate(date);
     }
 
+    // MODIFIES: this, expense
+    // EFFECTS: let the user set the place of the given expense
     private void expenseSetPlace(Expense expense) {
         System.out.println("Entre the name of a place: ");
         String name = input.nextLine().toLowerCase();
         expense.setPlace(name);
     }
 
+    // MODIFIES: this, expense
+    // EFFECTS: let the user set the category of the given expense
     private void expenseSetCategory(Expense expense) {
         if (allCategories.isEmpty()) {
             newCategory(expense);
@@ -291,6 +318,8 @@ public class ExpenseTrackerApp {
         }
     }
 
+    // MODIFIES: this, category
+    // EFFECTS: let the user set the label of the given category
     private void categorySetLabel(Category category) {
         System.out.println("enter the new label: ");
         String label = input.nextLine().toLowerCase();
@@ -303,6 +332,9 @@ public class ExpenseTrackerApp {
         System.out.println("Label changed");
     }
 
+    // MODIFIES: this, expense
+    // EFFECTS: provides the user with options to choose from existing categories or to
+    //          create a new category to assign to the given expense
     private void chooseOrCreateNew(Expense expense) {
         String selection = "";
 
@@ -319,6 +351,8 @@ public class ExpenseTrackerApp {
         }
     }
 
+    // MODIFIES: this, expense
+    // EFFECTS: let the user choose an existing category to assign to the given expense
     private void chooseFromExistingCategories(Expense expense) {
         displayCategories();
         Category selected = selectCategory();
@@ -327,6 +361,8 @@ public class ExpenseTrackerApp {
         expense.setCategory(label);
     }
 
+    // MODIFIES: this, expense
+    // EFFECTS: let the user create a new category to assign to the given expense
     private void newCategory(Expense expense) {
         System.out.println("Entre the label a new Category: ");
 
@@ -342,6 +378,8 @@ public class ExpenseTrackerApp {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: let the user create a new empty category
     private void newCategory() {
         System.out.println("Entre the label a new Category: ");
 
@@ -356,6 +394,7 @@ public class ExpenseTrackerApp {
         System.out.println("\nNew category created");
     }
 
+    // EFFECTS: let the user select an expense by entering an index
     private Expense selectExpense(List<Expense> expenses) {
         System.out.println("Select an expense by entering the number in front of it: ");
         int index = input.nextInt();
@@ -363,6 +402,7 @@ public class ExpenseTrackerApp {
         return expenses.get(index - 1);
     }
 
+    // EFFECTS: let the user select a category by entering an index
     private Category selectCategory() {
         System.out.println("Select a category by entering the number in front of it: ");
         int index = input.nextInt();
@@ -370,6 +410,7 @@ public class ExpenseTrackerApp {
         return allCategories.get(index - 1);
     }
 
+    // EFFECTS: returns true if a category with the given label already exists
     private boolean categoryAlreadyExists(String label) {
         boolean b = false;
 
@@ -382,6 +423,7 @@ public class ExpenseTrackerApp {
         return b;
     }
 
+    // EFFECTS: displays an expense summary of the given expense
     private void displayExpenseSummary(Expense expense) {
         System.out.println("\tamount: " + expense.getAmount());
         System.out.println("\tdate: " + expense.getDate());
@@ -389,29 +431,44 @@ public class ExpenseTrackerApp {
         System.out.println("\tcategory: " + expense.getCategory());
     }
 
+    // EFFECTS: displays an expense summary of the given expense, with a message that
+    //          the expense has been modified
     private void displayModifiedExpense(Expense expense) {
         System.out.println("The expense has been modified:");
         displayExpenseSummary(expense);
     }
 
+    // EFFECTS: displays a numbered list of the date, amount, place, and category
+    //          of all Expenses in the given list of Expenses
     private void displayExpenses(List<Expense> expenses) {
-//        expenses = sortExpenses(expenses);
+        sortExpenses(expenses);
         int i = 1;
         for (Expense e : expenses) {
-            String message = "on " + e.getDate() + " you spent $" + e.getAmount()
-                    + " at " + e.getPlace() + " in the category " + e.getCategory();
+            long daysAgo = e.getDaysPriorToToday();
+            String daysAgoMessage = daysAgo + " days ago";
+
+            if (daysAgo == 0) {
+                daysAgoMessage = "today";
+            }
+
+            String message = daysAgoMessage + " (" + e.getDate() + ") you spent $"
+                    + e.getAmount() + " at " + e.getPlace() + " in the category "
+                    + e.getCategory();
 
             System.out.println("(" + i + ") " + message);
             i++;
         }
     }
 
-//    private List<Expense> sortExpenses(List<Expense> expenses) {
-//        List<Expense> sortedExpenses = new ArrayList<>();
-//        List<LocalDate> dates = new ArrayList<>();
-//        expenses.sort(Comparator.comparing());
-//    }
+    // REQUIRES: the list of Expenses is not empty
+    // MODIFIES: expenses
+    // EFFECTS: sort the given list of expenses chronologically from most recent to most distant
+    private void sortExpenses(List<Expense> expenses) {
+        expenses.sort(Comparator.comparing(Expense :: getDate));
+        Collections.reverse(expenses);
+    }
 
+    // EFFECTS: displays a numbered list of the labels of all Categories
     private void displayCategories() {
         System.out.println("Here is a list of all categories:");
         int numOfItems = allCategories.size();
@@ -422,6 +479,8 @@ public class ExpenseTrackerApp {
         }
     }
 
+    // REQUIRES: a category with the given label must be in allCategories
+    // EFFECTS: returns the category with the given label
     private Category findCategoryFromLabel(String label) {
         Category found = null;
 
@@ -434,6 +493,7 @@ public class ExpenseTrackerApp {
         return found;
     }
 
+    // EFFECTS: returns ture if selection is yes, false if selection is no
     private boolean selectYesOrNo() {
         String selection = "";
 
@@ -444,52 +504,5 @@ public class ExpenseTrackerApp {
         }
 
         return selection.equals("y");
-    }
-
-
-
-    private void createExamples() {
-        Expense E1 = new Expense();
-        Expense E2 = new Expense();
-        Expense E3 = new Expense();
-        Expense E4 = new Expense();
-        Expense E5 = new Expense();
-        allExpenses.add(E1);
-        allExpenses.add(E2);
-        allExpenses.add(E3);
-        allExpenses.add(E4);
-        allExpenses.add(E5);
-
-        Category C1 = new Category("grocery");
-        Category C2 = new Category("clothing");
-        Category C3 = new Category("rent");
-        allCategories.add(C1);
-        allCategories.add(C2);
-        allCategories.add(C3);
-
-        E1.setAmount(100);
-        E1.setPlace("no frills");
-        E1.setCategory("grocery");
-        C1.add(E1);
-
-        E2.setAmount(20);
-        E2.setPlace("save on food");
-        E2.setCategory("grocery");
-        C1.add(E2);
-
-        E3.setAmount(55);
-        E3.setPlace("ubc book store");
-        E3.setCategory("clothing");
-        C2.add(E3);
-
-        E4.setAmount(210);
-        E4.setPlace("lululemon");
-        E4.setCategory("clothing");
-        C2.add(E4);
-
-        E5.setAmount(1000);
-        E5.setPlace("ubc housing");
-        E5.setCategory("rent");
-        C3.add(E5);
     }
 }
