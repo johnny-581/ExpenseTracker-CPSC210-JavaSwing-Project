@@ -26,12 +26,21 @@ page. Anyone can use this application if they want a insight into their
 spending habits, which may likely be true for many students like me.
 
 ## User Stories
-- As a user, I want to be able to add a expense (eg. $10) to a category
-- As a user, I want to be able to add details such as amount, date, and
-place to these expenses
-- As a user, I want to be able to view a list of expense in any category
-- As a user, I want to be able to create a new category
-- As a user, I want to be able to delete a expense
-- As a user, I want to be able to delete a category
-- as a user, I want to see a list of my previous weeks' total spendings
-- as a user, I want to see the percentage of money I spent in each category
+- As a user, I want to be able to record an expense (eg. $10) and to add
+  details such as amount, date, place, and category to it.
+- As a user, I want to be able to create a new category with a chosen label.
+- As a user, I want to be able to delete an expense.
+- As a user, I want to be able to delete a category.
+- As a user, I want to be able to view a list of all expenses I recorded.
+- As a user, I want to be able to view a list of all categories.
+- As a user, I want to be able to view a list of expenses in any category.
+
+- as a user, I want to be able to see a list of my previous weeks' total
+  expenses.
+- as a user, I want to be able to see the percentage of money I spent in
+  each category.
+
+- As a user, when I select the quit option from the main menu, I want to be
+  reminded to save my to-do list to file and have the option to do so or not.
+- As a user, when I start the application, I want to be given the option to
+  load my to-do list from file.

@@ -36,6 +36,7 @@ public class ExpenseTrackerApp {
         System.out.println("\tq -> quit");
     }
 
+    // This Method is based on the runTeller() method in the TellerAppExample
     // MODIFIES: this
     // EFFECTS: processes user input on main menu
     public void runExpenseTracker() {
