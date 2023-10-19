@@ -45,9 +45,9 @@ public class CategoryTest {
     public void testAddOne() {
         testCategory.add(E1);
 
-        List<Expense> entries = testCategory.getExpenses();
-        assertEquals(1, entries.size());
-        assertEquals(E1, entries.get(0));
+        List<Expense> expenses = testCategory.getExpenses();
+        assertEquals(1, expenses.size());
+        assertEquals(E1, expenses.get(0));
     }
 
     @Test
@@ -56,11 +56,24 @@ public class CategoryTest {
         testCategory.add(E2);
         testCategory.add(E3);
 
-        List<Expense> entries = testCategory.getExpenses();
-        assertEquals(3, entries.size());
-        assertEquals(E1, entries.get(0));
-        assertEquals(E2, entries.get(1));
-        assertEquals(E3, entries.get(2));
+        List<Expense> expenses = testCategory.getExpenses();
+        assertEquals(3, expenses.size());
+        assertEquals(E1, expenses.get(0));
+        assertEquals(E2, expenses.get(1));
+        assertEquals(E3, expenses.get(2));
+    }
+
+    @Test
+    public void testAddToIndex() {
+        testCategory.add(E1);
+        testCategory.add(0, E2);
+        testCategory.add(1, E3);
+
+        List<Expense> expenses = testCategory.getExpenses();
+        assertEquals(3, expenses.size());
+        assertEquals(E2, expenses.get(0));
+        assertEquals(E3, expenses.get(1));
+        assertEquals(E1, expenses.get(2));
     }
 
     @Test
@@ -71,10 +84,10 @@ public class CategoryTest {
 
         testCategory.remove(E2);
 
-        List<Expense> entries = testCategory.getExpenses();
-        assertEquals(2, entries.size());
-        assertEquals(E1, entries.get(0));
-        assertEquals(E3, entries.get(1));
+        List<Expense> expenses = testCategory.getExpenses();
+        assertEquals(2, expenses.size());
+        assertEquals(E1, expenses.get(0));
+        assertEquals(E3, expenses.get(1));
     }
 
     @Test
@@ -87,8 +100,8 @@ public class CategoryTest {
         testCategory.remove(E2);
         testCategory.remove(E3);
 
-        List<Expense> entries = testCategory.getExpenses();
-        assertEquals(0, entries.size());
+        List<Expense> expenses = testCategory.getExpenses();
+        assertEquals(0, expenses.size());
     }
 
     @Test

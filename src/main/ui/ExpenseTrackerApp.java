@@ -2,28 +2,24 @@ package ui;
 
 import model.Category;
 import model.Expense;
+import model.ExpenseTracker;
 
 import java.util.*;
 
 public class ExpenseTrackerApp {
-    private static final String LABEL_OF_NO_CATEGORY = "none";
-    private static final String NAME_OF_NO_PLACE = "unknown";
-
-    private List<Expense> allExpenses;
-    private List<Category> allCategories;
-    private Category expensesWithoutCategory;
-    private Scanner input;
+    private final ExpenseTracker expenseTracker;
+    private final Scanner input;
 
     // MODIFIES: this
     // EFFECTS: initiates the expense tracker application; creates example expenses and categories;
     //          and runs it
     public ExpenseTrackerApp() {
-        allExpenses = new ArrayList<>();
-        allCategories = new ArrayList<>();
-        expensesWithoutCategory = new Category(LABEL_OF_NO_CATEGORY); // not in allCategories
+        expenseTracker = new ExpenseTracker();
         input = new Scanner(System.in);
+        input.useDelimiter("\n");
 
-        new CreateExamples(allExpenses, allCategories); // can be removed
+        new CreateExamples(expenseTracker); // can be removed
+        expenseTracker.sortExpenses();      // can be removed
         runExpenseTracker();
     }
 
@@ -65,14 +61,14 @@ public class ExpenseTrackerApp {
                 newExpense();
                 break;
             case "e":
-                if (allExpenses.isEmpty()) {
+                if (expenseTracker.hasNoExpense()) {
                     System.out.println("You have no expenses yet");
                 } else {
                     seeAllExpenses();
                 }
                 break;
             case "c":
-                if (allCategories.isEmpty()) {
+                if (expenseTracker.hasNoCategory()) {
                     System.out.println("There are no categories yet");
                 } else {
                     seeAllCategories();
@@ -88,7 +84,7 @@ public class ExpenseTrackerApp {
     // EFFECTS: creates a new expense with amount, date, place, and category
     private void newExpense() {
         Expense expense = new Expense();
-        allExpenses.add(expense);
+        expenseTracker.addExpense(expense);
 
         expenseSetAmount(expense);
 
@@ -97,7 +93,7 @@ public class ExpenseTrackerApp {
         if (yes) {
             expenseSetPlace(expense);
         } else {
-            expense.setPlace(NAME_OF_NO_PLACE);
+            expense.setNoPlace();
         }
 
         System.out.println("Do you want to add this expense to a category?");
@@ -105,8 +101,8 @@ public class ExpenseTrackerApp {
         if (yes1) {
             expenseSetCategory(expense);
         } else {
-            expensesWithoutCategory.add(expense);
-            expense.setCategory(LABEL_OF_NO_CATEGORY);
+            expense.setNoCategory();
+            expenseTracker.addExpenseToNoCategory(expense);
         }
 
         System.out.println("\nGreat! You just recorded the following expense:");
@@ -117,6 +113,7 @@ public class ExpenseTrackerApp {
     // EFFECTS: displays a list of all expenses and provides options to user
     private void seeAllExpenses() {
         System.out.println("Here is a list of all expenses:");
+        List<Expense> allExpenses = expenseTracker.getAllExpenses();
         displayExpenses(allExpenses);
 
         String selection = "";
@@ -197,7 +194,8 @@ public class ExpenseTrackerApp {
                 displayModifiedExpense(expense);
                 break;
             case "x":
-                deleteExpense(expense);
+                expenseTracker.deleteExpense(expense);
+                System.out.println("Expense deleted");
                 selection = "f";
                 break;
         }
@@ -228,7 +226,8 @@ public class ExpenseTrackerApp {
                     categorySetLabel(category);
                     break;
                 case "x":
-                    deleteCategory(category);
+                    expenseTracker.deleteCategory(category);
+                    System.out.println("Category deleted");
                     selection = "f";
                     break;
             }
@@ -257,38 +256,20 @@ public class ExpenseTrackerApp {
 
     // EFFECTS: displays the total expense of each week
     private void displayWeeklyStatistics() {
-        new WeeklyStatistics(allExpenses);
+        new WeeklyStatistics(expenseTracker.getAllExpenses());
     }
 
     // EFFECTS: displays the percentage of money spent in each category
     private void displayCategoryStatistics() {
-        new CategoryStatistics(allCategories, allExpenses);
-    }
+        System.out.println("\nHere is a statistic of how much you spent in each category:");
 
-    // MODIFIES: this, expense
-    // EFFECTS: deletes the given expense
-    private void deleteExpense(Expense expense) {
-        allExpenses.remove(expense);
-        String categoryLabel = expense.getCategory();
+        List<Category> allCategories = expenseTracker.getAllCategories();
+        for (Category c : allCategories) {
+            String label = c.getLabel();
+            String percentage = expenseTracker.calculatePercentage(c);
 
-        if (!categoryLabel.equals(LABEL_OF_NO_CATEGORY)) {
-            Category category = findCategoryFromLabel(categoryLabel);
-            category.remove(expense);
+            System.out.println(" - " + label + ": " + percentage);
         }
-
-        System.out.println("Expense deleted");
-    }
-
-    // MODIFIES: this, category
-    // EFFECTS: deletes the given category
-    private void deleteCategory(Category category) {
-        allCategories.remove(category);
-
-        for (Expense e : category.getExpenses()) {
-            e.setCategory(LABEL_OF_NO_CATEGORY);
-        }
-
-        System.out.println("Category deleted");
     }
 
     // MODIFIES: this, expense
@@ -300,25 +281,28 @@ public class ExpenseTrackerApp {
     }
 
     // MODIFIES: this, expense
-    // EFFECTS: let the user set the date of the given expense
+    // EFFECTS: let the user set the date of the given expense, then sort all the
+    //          expenses chronologically so that the expense is at the correct
+    //          chronological position
     private void expenseSetDate(Expense expense) {
         System.out.println("Entre a date (YYYY-MM-DD): ");
         String date = input.next();
         expense.setDate(date);
+        expenseTracker.sortExpenses();
     }
 
     // MODIFIES: this, expense
     // EFFECTS: let the user set the place of the given expense
     private void expenseSetPlace(Expense expense) {
         System.out.println("Entre the name of a place: ");
-        String name = input.nextLine().toLowerCase();
+        String name = input.next().toLowerCase();
         expense.setPlace(name);
     }
 
     // MODIFIES: this, expense
     // EFFECTS: let the user set the category of the given expense
     private void expenseSetCategory(Expense expense) {
-        if (allCategories.isEmpty()) {
+        if (expenseTracker.hasNoCategory()) {
             newCategory(expense);
         } else {
             chooseOrCreateNew(expense);
@@ -329,12 +313,11 @@ public class ExpenseTrackerApp {
     // EFFECTS: let the user set the label of the given category
     private void categorySetLabel(Category category) {
         System.out.println("enter the new label: ");
-        String label = input.nextLine().toLowerCase();
-        category.setLabel(label);
+        String oldLabel = category.getLabel();
+        String newLabel = input.next().toLowerCase();
 
-        for (Expense e : allExpenses) {
-            e.setCategory(label);
-        }
+        category.setLabel(newLabel);
+        expenseTracker.changeCategoryForExpenses(oldLabel, newLabel);
 
         System.out.println("Label changed");
     }
@@ -363,40 +346,37 @@ public class ExpenseTrackerApp {
     private void chooseFromExistingCategories(Expense expense) {
         displayCategories();
         Category selected = selectCategory();
-        String label = selected.getLabel();
-        selected.add(expense);
-        expense.setCategory(label);
+        expenseTracker.addExpenseToCategory(expense, selected);
     }
 
     // MODIFIES: this, expense
-    // EFFECTS: let the user create a new category to assign to the given expense
+    // EFFECTS: lets the user create a new category to assign to the given expense
     private void newCategory(Expense expense) {
         System.out.println("Entre the label a new Category: ");
 
-        String label = input.nextLine().toLowerCase();
-        if (categoryAlreadyExists(label)) {
+        String label = input.next().toLowerCase();
+        if (expenseTracker.categoryExists(label)) {
             System.out.println("This category already exists");
             newCategory(expense);
         } else {
             Category category = new Category(label);
-            allCategories.add(category);
-            category.add(expense);
-            expense.setCategory(label);
+            expenseTracker.addCategory(category);
+            expenseTracker.addExpenseToCategory(expense, category);
         }
     }
 
     // MODIFIES: this
-    // EFFECTS: let the user create a new empty category
+    // EFFECTS: lets the user create a new empty category
     private void newCategory() {
         System.out.println("Entre the label a new Category: ");
 
-        String label = input.nextLine().toLowerCase();
-        if (categoryAlreadyExists(label)) {
+        String label = input.next().toLowerCase();
+        if (expenseTracker.categoryExists(label)) {
             System.out.println("This category already exists");
             newCategory();
         } else {
             Category category = new Category(label);
-            allCategories.add(category);
+            expenseTracker.addCategory(category);
         }
         System.out.println("\nNew category created");
     }
@@ -414,20 +394,20 @@ public class ExpenseTrackerApp {
         System.out.println("Select a category by entering the number in front of it: ");
         int index = input.nextInt();
 
-        return allCategories.get(index - 1);
+        return expenseTracker.getCategoryAt(index);
     }
 
-    // EFFECTS: returns true if a category with the given label already exists
-    private boolean categoryAlreadyExists(String label) {
-        boolean b = false;
+    // EFFECTS: returns ture if selection is yes, false if selection is no
+    private boolean selectYesOrNo() {
+        String selection = "";
 
-        for (Category c : allCategories) {
-            if (c.hasLabel(label)) {
-                b = true;
-            }
+        while (!(selection.equals("y") || selection.equals("n"))) {
+            System.out.println("y -> yes");
+            System.out.println("n -> no");
+            selection = input.next().toLowerCase();
         }
 
-        return b;
+        return selection.equals("y");
     }
 
     // EFFECTS: displays an expense summary of the given expense
@@ -448,68 +428,22 @@ public class ExpenseTrackerApp {
     // EFFECTS: displays a numbered list of the date, amount, place, and category
     //          of all Expenses in the given list of Expenses
     private void displayExpenses(List<Expense> expenses) {
-        sortExpenses(expenses);
         int i = 1;
         for (Expense e : expenses) {
-            long daysAgo = e.getDaysPriorToToday();
-            String daysAgoMessage = daysAgo + " days ago";
-
-            if (daysAgo == 0) {
-                daysAgoMessage = "today";
-            }
-
-            String message = daysAgoMessage + " (" + e.getDate() + ") you spent $"
-                    + e.getAmount() + " at " + e.getPlace() + " in the category "
-                    + e.getCategory();
-
+            String message = e.getSummaryMessage();
             System.out.println("(" + i + ") " + message);
             i++;
         }
     }
 
-    // REQUIRES: the list of Expenses is not empty
-    // MODIFIES: expenses
-    // EFFECTS: sort the given list of expenses chronologically from most recent to most distant
-    private void sortExpenses(List<Expense> expenses) {
-        expenses.sort(Comparator.comparing(Expense::getDate));
-        Collections.reverse(expenses);
-    }
-
     // EFFECTS: displays a numbered list of the labels of all Categories
     private void displayCategories() {
         System.out.println("Here is a list of all categories:");
-        int numOfItems = allCategories.size();
+        int numOfItems = expenseTracker.getNumCategories();
 
         for (int i = 1; i <= numOfItems; i++) {
-            String message = allCategories.get(i - 1).getLabel();
+            String message = expenseTracker.getCategoryAt(i).getLabel();
             System.out.println("(" + i + ") " + message);
         }
-    }
-
-    // REQUIRES: a category with the given label must be in allCategories
-    // EFFECTS: returns the category with the given label
-    private Category findCategoryFromLabel(String label) {
-        Category found = null;
-
-        for (Category c : allCategories) {
-            if (c.hasLabel(label)) {
-                found = c;
-            }
-        }
-
-        return found;
-    }
-
-    // EFFECTS: returns ture if selection is yes, false if selection is no
-    private boolean selectYesOrNo() {
-        String selection = "";
-
-        while (!(selection.equals("y") || selection.equals("n"))) {
-            System.out.println("y -> yes");
-            System.out.println("n -> no");
-            selection = input.next().toLowerCase();
-        }
-
-        return selection.equals("y");
     }
 }

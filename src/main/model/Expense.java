@@ -5,6 +5,9 @@ import java.time.temporal.ChronoUnit;
 
 // (Class X) Represents the record of an expense
 public class Expense {
+    public static final String LABEL_OF_NO_CATEGORY = "none"; // ask TA about visibility
+    private static final String NAME_OF_NO_PLACE = "unknown";
+
     private double amount;
     private LocalDate date;
     private String place;
@@ -32,6 +35,18 @@ public class Expense {
         this.category = category;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the expense as having no place
+    public void setNoPlace() {
+        setPlace(NAME_OF_NO_PLACE);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets the expense as having no category
+    public void setNoCategory() {
+        setCategory(LABEL_OF_NO_CATEGORY);
+    }
+
     public double getAmount() {
         return amount;
     }
@@ -52,5 +67,19 @@ public class Expense {
     public long getDaysPriorToToday() {
         LocalDate today = LocalDate.now();
         return ChronoUnit.DAYS.between(date, today);
+    }
+
+    // EFFECTS: returns a summarization of the Expense as a string
+    public String getSummaryMessage() {
+        long numDaysAgo = getDaysPriorToToday();
+        String daysAgoMessage = numDaysAgo + " days ago";
+
+        if (numDaysAgo == 0) {
+            daysAgoMessage = "today";
+        }
+
+        return daysAgoMessage + " (" + getDate() + ") you spent $"
+                + getAmount() + " at " + getPlace() + " in the category "
+                + getCategory();
     }
 }

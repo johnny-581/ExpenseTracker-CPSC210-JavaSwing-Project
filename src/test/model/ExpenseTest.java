@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+import static model.Expense.LABEL_OF_NO_CATEGORY;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ExpenseTest {
@@ -21,6 +22,12 @@ class ExpenseTest {
         assertEquals(100, E1.getAmount());
         assertEquals(LocalDate.now(), E1.getDate());
         assertNull(E1.getPlace());
+    }
+
+    @Test
+    public void testSetNoCategory() {
+        E1.setNoCategory();
+        assertEquals(LABEL_OF_NO_CATEGORY, E1.getCategory());
     }
 
     @Test

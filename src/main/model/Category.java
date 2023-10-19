@@ -7,7 +7,7 @@ import java.util.Objects;
 // (Class Y) Represents a expense category with a list of Expenses in this category
 public class Category {
     private String label;
-    private List<Expense> expenses;
+    private final List<Expense> expenses;
 
     public Category(String label) {
         this.label = label;
@@ -35,6 +35,12 @@ public class Category {
     // EFFECTS: adds the given expense to this category
     public void add(Expense e) {
         expenses.add(e);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: adds the given expense to this category at the given index
+    public void add(int index, Expense e) {
+        expenses.add(index, e);
     }
 
     // MODIFIES: this

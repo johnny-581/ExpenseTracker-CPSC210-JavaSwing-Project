@@ -2,14 +2,13 @@ package ui;
 
 import model.Category;
 import model.Expense;
+import model.ExpenseTracker;
 
 import java.time.LocalDate;
-import java.util.List;
 
 // Initiates example expenses and categories (for testing)
 public class CreateExamples {
-    List<Expense> allExpenses;
-    List<Category> allCategories;
+    ExpenseTracker expenseTracker;
     LocalDate today;
 
     Expense expense1;
@@ -22,9 +21,8 @@ public class CreateExamples {
     Category category3;
 
     // EFFECTS: Takes in allExpenses and allCategories as parameters and sets them as fields
-    public CreateExamples(List<Expense> allExpenses, List<Category> allCategories) {
-        this.allExpenses = allExpenses;
-        this.allCategories = allCategories;
+    public CreateExamples(ExpenseTracker expenseTracker) {
+        this.expenseTracker = expenseTracker;
         this.today = LocalDate.now();
         create();
     }
@@ -36,18 +34,18 @@ public class CreateExamples {
         expense3 = new Expense();
         expense4 = new Expense();
         expense5 = new Expense();
-        allExpenses.add(expense1);
-        allExpenses.add(expense2);
-        allExpenses.add(expense3);
-        allExpenses.add(expense4);
-        allExpenses.add(expense5);
+        expenseTracker.addExpense(expense1);
+        expenseTracker.addExpense(expense2);
+        expenseTracker.addExpense(expense3);
+        expenseTracker.addExpense(expense4);
+        expenseTracker.addExpense(expense5);
 
         category1 = new Category("grocery");
         category2 = new Category("clothing");
         category3 = new Category("rent");
-        allCategories.add(category1);
-        allCategories.add(category2);
-        allCategories.add(category3);
+        expenseTracker.addCategory(category1);
+        expenseTracker.addCategory(category2);
+        expenseTracker.addCategory(category3);
 
         setExpenses();
     }
