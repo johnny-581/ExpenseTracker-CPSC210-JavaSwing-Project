@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static model.Expense.LABEL_OF_NO_CATEGORY;
+import static model.Expense.NAME_OF_NO_PLACE;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ExpenseTest {
@@ -20,8 +21,14 @@ class ExpenseTest {
     @Test
     public void testConstructor() {
         assertEquals(100, E1.getAmount());
-        assertEquals(LocalDate.now(), E1.getDate());
+        assertEquals(LocalDate.now(), E1.getDate().toLocalDate());
         assertNull(E1.getPlace());
+    }
+
+    @Test
+    public void testSetNoPlace() {
+        E1.setNoPlace();
+        assertEquals(NAME_OF_NO_PLACE, E1.getPlace());
     }
 
     @Test
@@ -41,5 +48,25 @@ class ExpenseTest {
 
         E1.setDate(threeDaysPrior);
         assertEquals(3, E1.getDaysPriorToToday());
+    }
+
+    @Test
+    public void testGetSummaryToday() {
+        LocalDate today = LocalDate.now();
+        E1.setDate(today.toString());
+        E1.setPlace("ubc");
+        E1.setCategory("clothing");
+        assertEquals("today (" + today + ") you spent $100.0 at \"ubc\" "
+                        + "in the category \"clothing\"", E1.getSummary());
+    }
+
+    @Test
+    public void testGetSummaryNotToday() {
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        E1.setDate(yesterday.toString());
+        E1.setPlace("ubc");
+        E1.setCategory("clothing");
+        assertEquals("1 day(s) ago (" + yesterday + ") you spent $100.0 at \"ubc\" "
+                + "in the category \"clothing\"", E1.getSummary());
     }
 }

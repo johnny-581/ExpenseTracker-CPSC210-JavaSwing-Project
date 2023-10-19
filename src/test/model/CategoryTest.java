@@ -32,6 +32,12 @@ public class CategoryTest {
     }
 
     @Test
+    public void testSetLabel() {
+        testCategory.setLabel("new label");
+        assertEquals("new label", testCategory.getLabel());
+    }
+
+    @Test
     public void testHasLabelTrue() {
         assertTrue(testCategory.hasLabel("food"));
     }

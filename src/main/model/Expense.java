@@ -7,7 +7,7 @@ import java.time.temporal.ChronoUnit;
 // (Class X) Represents the record of an expense
 public class Expense {
     public static final String LABEL_OF_NO_CATEGORY = "none"; // ask TA about visibility
-    private static final String NAME_OF_NO_PLACE = "unknown place";
+    public static final String NAME_OF_NO_PLACE = "unknown place";
 
     private double amount;
     private LocalDateTime date;
@@ -74,7 +74,7 @@ public class Expense {
     // EFFECTS: returns a summarization of the Expense as a string
     public String getSummary() {
         long numDaysAgo = getDaysPriorToToday();
-        String daysAgoMessage = numDaysAgo + " days ago";
+        String daysAgoMessage = numDaysAgo + " day(s) ago";
 
         if (numDaysAgo == 0) {
             daysAgoMessage = "today";
