@@ -122,19 +122,23 @@ public class ExpenseTrackerApp {
     private void seeAllCategories() {
         String selection = "";
         while (!(selection.equals("m") || selection.equals("n")
-        || selection.equals("s"))) {
+                || selection.equals("s"))) {
             displayCategories();
             System.out.println("\nm -> select one to modify");
             System.out.println("n -> create a new category");
             System.out.println("s -> display categorical expense statistics");
             selection = input.next().toLowerCase();
 
-            if (selection.equals("m")) {
-                modifyCategories();
-            } else if (selection.equals("n")) {
-                newCategory();
-            } else if (selection.equals("s")) {
-                displayCategoryStatistics();
+            switch (selection) {
+                case "m":
+                    modifyCategories();
+                    break;
+                case "n":
+                    newCategory();
+                    break;
+                case "s":
+                    displayCategoryStatistics();
+                    break;
             }
         }
     }
@@ -157,36 +161,37 @@ public class ExpenseTrackerApp {
             System.out.println("f -> finish modification");
 
             selection = input.next().toLowerCase();
-            modifyExpensesHandleSelection(selection, expense);
+            selection = modifyExpensesHandleSelection(selection, expense);
         }
     }
 
     // MODIFIES: this, expense
-    // EFFECTS: handles user selection for modifyExpenses
-    private void modifyExpensesHandleSelection(String selection, Expense expense) {
+    // EFFECTS: handles user selection for modifyExpenses()
+    private String modifyExpensesHandleSelection(String selection, Expense expense) {
         switch (selection) {
             case "a":
                 expenseSetAmount(expense);
-                displayModifiedExpense(expense);
                 break;
             case "d":
                 expenseSetDate(expense);
-                displayModifiedExpense(expense);
                 break;
             case "p":
                 expenseSetPlace(expense);
-                displayModifiedExpense(expense);
                 break;
             case "c":
                 expenseSetCategory(expense);
-                displayModifiedExpense(expense);
-                break;
-            case "x":
-                expenseTracker.deleteExpense(expense);
-                System.out.println("Expense deleted");
-                selection = "f";
                 break;
         }
+        if (selection.equals("x")) {
+            expenseTracker.deleteExpense(expense);
+            System.out.println("Expense deleted");
+            selection = "f";
+        } else {
+            selection = "";
+            System.out.println("The expense has been modified:");
+            System.out.println("\n" + expense.getSummary());
+        }
+        return selection;
     }
 
     // MODIFIES: this
@@ -205,22 +210,31 @@ public class ExpenseTrackerApp {
             System.out.println("l -> change its label");
             System.out.println("x -> delete it");
             System.out.println("f -> finish modification");
-            selection = input.next().toLowerCase();
 
-            switch (selection) {
-                case "e":
-                    seeExpensesInCategory(category, categoryLabel);
-                    break;
-                case "l":
-                    categorySetLabel(category);
-                    break;
-                case "x":
-                    expenseTracker.deleteCategory(category);
-                    System.out.println("Category deleted");
-                    selection = "f";
-                    break;
-            }
+            selection = input.next().toLowerCase();
+            selection = modifyCategoriesHandleSelection(selection, category);
         }
+    }
+
+    // MODIFIES: this, category
+    // EFFECTS: handles user selection for modifyCategories()
+    private String modifyCategoriesHandleSelection(String selection, Category category) {
+        switch (selection) {
+            case "e":
+                seeExpensesInCategory(category, category.getLabel());
+                selection = "";
+                break;
+            case "l":
+                categorySetLabel(category);
+                selection = "";
+                break;
+            case "x":
+                expenseTracker.deleteCategory(category);
+                System.out.println("Category deleted");
+                selection = "f";
+                break;
+        }
+        return selection;
     }
 
     // MODIFIES: this, category
@@ -407,13 +421,6 @@ public class ExpenseTrackerApp {
             System.out.println("(" + i + ") " + message);
             i++;
         }
-    }
-
-    // EFFECTS: displays an expense summary of the given expense, with a message that
-    //          the expense has been modified
-    private void displayModifiedExpense(Expense expense) {
-        System.out.println("The expense has been modified:");
-        System.out.println("\n" + expense.getSummary());
     }
 
     // EFFECTS: displays a numbered list of the labels of all Categories
