@@ -19,7 +19,6 @@ public class ExpenseTrackerApp {
         input.useDelimiter("\n");
 
         new CreateExamples(expenseTracker); // can be removed
-        expenseTracker.sortExpenses();      // can be removed
         runExpenseTracker();
     }
 
@@ -28,7 +27,7 @@ public class ExpenseTrackerApp {
         System.out.println("\nSelect from:");
         System.out.println("\tn -> record new expense");
         System.out.println("\te -> see all expenses");
-        System.out.println("\tc -> see all expense categories");
+        System.out.println("\tc -> see all categories");
         System.out.println("\tq -> quit");
     }
 
@@ -106,7 +105,7 @@ public class ExpenseTrackerApp {
         }
 
         System.out.println("\nGreat! You just recorded the following expense:");
-        displayExpenseSummary(expense);
+        System.out.println("\n" + expense.getSummary());
     }
 
     // MODIFIES: this
@@ -115,26 +114,15 @@ public class ExpenseTrackerApp {
         System.out.println("Here is a list of all expenses:");
         List<Expense> allExpenses = expenseTracker.getAllExpenses();
         displayExpenses(allExpenses);
-
-        String selection = "";
-        while (!(selection.equals("m") || selection.equals("s"))) {
-            System.out.println("\nm -> modify");
-            System.out.println("s -> display weekly expense statistics");
-            selection = input.next().toLowerCase();
-
-            if (selection.equals("m")) {
-                modifyExpenses(allExpenses);
-            } else if (selection.equals("s")) {
-                displayWeeklyStatistics();
-            }
-        }
+        modifyExpenses(allExpenses);
     }
 
     // MODIFIES: this
     // EFFECTS: displays a list of all categories and provides options to user
     private void seeAllCategories() {
         String selection = "";
-        while (!(selection.equals("m") || selection.equals("s"))) {
+        while (!(selection.equals("m") || selection.equals("n")
+        || selection.equals("s"))) {
             displayCategories();
             System.out.println("\nm -> select one to modify");
             System.out.println("n -> create a new category");
@@ -157,7 +145,7 @@ public class ExpenseTrackerApp {
     private void modifyExpenses(List<Expense> expenses) {
         Expense expense = selectExpense(expenses);
         System.out.println("You have selected the following expense:");
-        displayExpenseSummary(expense);
+        System.out.println("\n" + expense.getSummary());
 
         String selection = "";
         while (!(selection.equals("f"))) {
@@ -210,7 +198,8 @@ public class ExpenseTrackerApp {
         String selection = "";
         while (!(selection.equals("f"))) {
             String categoryLabel = category.getLabel();
-            System.out.println("\nYou have selected the following category: " + categoryLabel);
+            System.out.println("\nYou have selected the category \""
+                    + categoryLabel + "\"");
 
             System.out.println("\ne -> see a list of expenses in it");
             System.out.println("l -> change its label");
@@ -254,11 +243,6 @@ public class ExpenseTrackerApp {
         }
     }
 
-    // EFFECTS: displays the total expense of each week
-    private void displayWeeklyStatistics() {
-        new WeeklyStatistics(expenseTracker.getAllExpenses());
-    }
-
     // EFFECTS: displays the percentage of money spent in each category
     private void displayCategoryStatistics() {
         System.out.println("\nHere is a statistic of how much you spent in each category:");
@@ -280,6 +264,7 @@ public class ExpenseTrackerApp {
         expense.setAmount(amount);
     }
 
+    // REQUIRES: date input can't be in the futures
     // MODIFIES: this, expense
     // EFFECTS: let the user set the date of the given expense, then sort all the
     //          expenses chronologically so that the expense is at the correct
@@ -288,7 +273,6 @@ public class ExpenseTrackerApp {
         System.out.println("Entre a date (YYYY-MM-DD): ");
         String date = input.next();
         expense.setDate(date);
-        expenseTracker.sortExpenses();
     }
 
     // MODIFIES: this, expense
@@ -381,14 +365,16 @@ public class ExpenseTrackerApp {
         System.out.println("\nNew category created");
     }
 
+    // REQUIRES: input must be an integer in range
     // EFFECTS: let the user select an expense by entering an index
     private Expense selectExpense(List<Expense> expenses) {
-        System.out.println("Select an expense by entering the number in front of it: ");
+        System.out.println("\nSelect an expense by entering the number in front of it: ");
         int index = input.nextInt();
 
         return expenses.get(index - 1);
     }
 
+    // REQUIRES: input must be an integer in range
     // EFFECTS: let the user select a category by entering an index
     private Category selectCategory() {
         System.out.println("Select a category by entering the number in front of it: ");
@@ -410,40 +396,35 @@ public class ExpenseTrackerApp {
         return selection.equals("y");
     }
 
-    // EFFECTS: displays an expense summary of the given expense
-    private void displayExpenseSummary(Expense expense) {
-        System.out.println("\tamount: " + expense.getAmount());
-        System.out.println("\tdate: " + expense.getDate());
-        System.out.println("\tplace: " + expense.getPlace());
-        System.out.println("\tcategory: " + expense.getCategory());
+    // EFFECTS: displays a numbered list of the date, amount, place, and category
+    //          of all Expenses in the given list of Expenses in chronological order
+    //          from most recent to oldest
+    private void displayExpenses(List<Expense> expenses) {
+        int i = 1;
+        expenseTracker.sortExpenses(expenses);
+        for (Expense e : expenses) {
+            String message = e.getSummary();
+            System.out.println("(" + i + ") " + message);
+            i++;
+        }
     }
 
     // EFFECTS: displays an expense summary of the given expense, with a message that
     //          the expense has been modified
     private void displayModifiedExpense(Expense expense) {
         System.out.println("The expense has been modified:");
-        displayExpenseSummary(expense);
-    }
-
-    // EFFECTS: displays a numbered list of the date, amount, place, and category
-    //          of all Expenses in the given list of Expenses
-    private void displayExpenses(List<Expense> expenses) {
-        int i = 1;
-        for (Expense e : expenses) {
-            String message = e.getSummaryMessage();
-            System.out.println("(" + i + ") " + message);
-            i++;
-        }
+        System.out.println("\n" + expense.getSummary());
     }
 
     // EFFECTS: displays a numbered list of the labels of all Categories
     private void displayCategories() {
         System.out.println("Here is a list of all categories:");
-        int numOfItems = expenseTracker.getNumCategories();
+        List<Category> allCategories = expenseTracker.getAllCategories();
 
-        for (int i = 1; i <= numOfItems; i++) {
-            String message = expenseTracker.getCategoryAt(i).getLabel();
-            System.out.println("(" + i + ") " + message);
+        int i = 1;
+        for (Category c : allCategories) {
+            System.out.println("(" + i + ") " + c.getLabel());
+            i++;
         }
     }
 }

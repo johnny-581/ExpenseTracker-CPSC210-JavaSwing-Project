@@ -42,18 +42,6 @@ public class ExpenseTrackerTest {
     }
 
     @Test
-    public void testGetNumCategoriesZero() {
-        assertEquals(0, expenseTracker.getNumCategories());
-    }
-
-    @Test
-    public void testGetNumCategoriesThree() {
-        initiateExpensesAndCategories();
-        addExpensesAndCategories();
-        assertEquals(3, expenseTracker.getNumCategories());
-    }
-
-    @Test
     public void testAddOneExpense() {
         initiateExpensesAndCategories();
         expenseTracker.addExpense(expense1);
@@ -71,8 +59,8 @@ public class ExpenseTrackerTest {
 
         assertEquals(3, expenseTracker.getAllExpenses().size());
         assertEquals(expense1, expenseTracker.getAllExpenses().get(0));
-        assertEquals(expense3, expenseTracker.getAllExpenses().get(1));
-        assertEquals(expense2, expenseTracker.getAllExpenses().get(2));
+        assertEquals(expense2, expenseTracker.getAllExpenses().get(1));
+        assertEquals(expense3, expenseTracker.getAllExpenses().get(2));
     }
 
     @Test
@@ -80,7 +68,7 @@ public class ExpenseTrackerTest {
         initiateExpensesAndCategories();
         expenseTracker.addCategory(category1);
 
-        assertEquals(1, expenseTracker.getNumCategories());
+        assertEquals(1, expenseTracker.getAllCategories().size());
         assertEquals(category1, expenseTracker.getCategoryAt(1));
     }
 
@@ -91,7 +79,7 @@ public class ExpenseTrackerTest {
         expenseTracker.addCategory(category2);
         expenseTracker.addCategory(category3);
 
-        assertEquals(3, expenseTracker.getNumCategories());
+        assertEquals(3, expenseTracker.getAllCategories().size());
         assertEquals(category1, expenseTracker.getCategoryAt(1));
         assertEquals(category2, expenseTracker.getCategoryAt(2));
         assertEquals(category3, expenseTracker.getCategoryAt(3));
@@ -116,8 +104,8 @@ public class ExpenseTrackerTest {
 
         assertEquals(3, category1.getExpenses().size());
         assertEquals(expense1, category1.getExpenses().get(0));
-        assertEquals(expense3, category1.getExpenses().get(1));
-        assertEquals(expense2, category1.getExpenses().get(2));
+        assertEquals(expense2, category1.getExpenses().get(1));
+        assertEquals(expense3, category1.getExpenses().get(2));
         assertEquals(category1.getLabel(), expense1.getCategory());
         assertEquals(category1.getLabel(), expense2.getCategory());
         assertEquals(category1.getLabel(), expense3.getCategory());
@@ -271,18 +259,6 @@ public class ExpenseTrackerTest {
         assertEquals("grocery", expense1.getCategory());
         assertEquals("grocery", expense2.getCategory());
         assertEquals("clothing", expense3.getCategory());
-    }
-
-    @Test
-    public void testSortAllExpenses() {
-        initiateExpensesAndCategories();
-        addExpensesAndCategories();
-        expenseTracker.sortExpenses();
-
-        List<Expense> allExpenses = expenseTracker.getAllExpenses();
-        assertEquals(expense1, allExpenses.get(0));
-        assertEquals(expense3, allExpenses.get(1));
-        assertEquals(expense2, allExpenses.get(2));
     }
 
     @Test

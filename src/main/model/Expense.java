@@ -1,30 +1,32 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 // (Class X) Represents the record of an expense
 public class Expense {
     public static final String LABEL_OF_NO_CATEGORY = "none"; // ask TA about visibility
-    private static final String NAME_OF_NO_PLACE = "unknown";
+    private static final String NAME_OF_NO_PLACE = "unknown place";
 
     private double amount;
-    private LocalDate date;
+    private LocalDateTime date;
     private String place;
     private String category;
 
     // EFFECTS: creates a new expense of $0 and sets its date to today
     public Expense() {
         this.amount = 0;
-        this.date = LocalDate.now();
+        this.date = LocalDateTime.now();
     }
 
     public void setAmount(double amount) {
         this.amount = amount;
     }
 
+    // REQUIRES: date can't be in the future
     public void setDate(String date) {
-        this.date = LocalDate.parse(date);
+        this.date = LocalDate.parse(date).atStartOfDay();
     }
 
     public void setPlace(String place) {
@@ -51,7 +53,7 @@ public class Expense {
         return amount;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
@@ -66,11 +68,11 @@ public class Expense {
     // EFFECTS: returns the period in days from the date of the expense to today
     public long getDaysPriorToToday() {
         LocalDate today = LocalDate.now();
-        return ChronoUnit.DAYS.between(date, today);
+        return ChronoUnit.DAYS.between(date.toLocalDate(), today);
     }
 
     // EFFECTS: returns a summarization of the Expense as a string
-    public String getSummaryMessage() {
+    public String getSummary() {
         long numDaysAgo = getDaysPriorToToday();
         String daysAgoMessage = numDaysAgo + " days ago";
 
@@ -78,8 +80,9 @@ public class Expense {
             daysAgoMessage = "today";
         }
 
-        return daysAgoMessage + " (" + getDate() + ") you spent $"
-                + getAmount() + " at " + getPlace() + " in the category "
-                + getCategory();
+        LocalDate date = this.date.toLocalDate();
+        return daysAgoMessage + " (" + date + ") you spent $"
+                + amount + " at \"" + place + "\" in the category \""
+                + category + "\"";
     }
 }

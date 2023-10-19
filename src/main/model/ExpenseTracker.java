@@ -9,9 +9,7 @@ import java.util.List;
 import static model.Expense.LABEL_OF_NO_CATEGORY;
 
 // Represents an expense tracker with a list of expenses and a list of categories,
-// as well as a category that contains all expenses without a category. The expenses
-// are maintained in chronological order according to their dates, from the most
-// recent to most distant.
+// as well as a category that contains all expenses without a category.
 public class ExpenseTracker {
     private final List<Expense> allExpenses;
     private final List<Category> allCategories;
@@ -41,17 +39,10 @@ public class ExpenseTracker {
         return allCategories.get(index - 1);
     }
 
-    // EFFECTS: returns the number of categories there are
-    public int getNumCategories() {
-        return allCategories.size();
-    }
-
     // MODIFIES: this
-    // EFFECTS: adds the given expense to the front of the list (since its date is the
-    //          most recent)
+    // EFFECTS: adds the given expense, then sort all expenses
     public void addExpense(Expense expense) {
-        allExpenses.add(0, expense);
-        sortExpenses();
+        allExpenses.add(expense);
     }
 
     // MODIFIES: this
@@ -67,7 +58,6 @@ public class ExpenseTracker {
         String label = category.getLabel();
         expense.setCategory(label);
         category.add(expense);
-        sortExpenses(category.getExpenses());
     }
 
     // MODIFIES: this
@@ -139,18 +129,10 @@ public class ExpenseTracker {
         }
     }
 
-    // REQUIRES: allExpenses is not empty
-    // MODIFIES: this
-    // EFFECTS: sorts all expenses chronologically from most recent to most distant
-    public void sortExpenses() {
-        allExpenses.sort(Comparator.comparing(Expense::getDate));
-        Collections.reverse(allExpenses);
-    }
-
     // REQUIRES: the given list of expenses is not empty
     // MODIFIES: this
-    // EFFECTS: sorts the given list of expenses chronologically from most recent to
-    //          most distant
+    // EFFECTS: sorts the given list of expenses chronologically from most recent
+    //          to oldest
     public void sortExpenses(List<Expense> expenses) {
         expenses.sort(Comparator.comparing(Expense::getDate));
         Collections.reverse(expenses);
@@ -177,4 +159,3 @@ public class ExpenseTracker {
         return total;
     }
 }
-
