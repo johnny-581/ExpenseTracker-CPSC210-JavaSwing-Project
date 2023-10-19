@@ -188,10 +188,15 @@ public class ExpenseTrackerApp {
             selection = "f";
         } else {
             selection = "";
-            System.out.println("The expense has been modified:");
-            System.out.println("\n" + expense.getSummary());
+            displaysModifiedExpense(expense);
         }
         return selection;
+    }
+
+    //EFFECTS: prints the summary of the modified expense
+    private void displaysModifiedExpense(Expense expense) {
+        System.out.println("The expense has been modified:");
+        System.out.println("\n" + expense.getSummary());
     }
 
     // MODIFIES: this
