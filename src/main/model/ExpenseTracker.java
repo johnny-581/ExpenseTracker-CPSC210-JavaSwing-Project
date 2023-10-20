@@ -1,5 +1,9 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +14,7 @@ import static model.Expense.LABEL_OF_NO_CATEGORY;
 
 // Represents an expense tracker with a list of expenses and a list of categories,
 // as well as a category that contains all expenses without a category.
-public class ExpenseTracker {
+public class ExpenseTracker implements Writable {
     private final List<Expense> allExpenses;
     private final List<Category> allCategories;
     private final Category categoryOfNoCategory; // not in allCategories
@@ -88,16 +92,12 @@ public class ExpenseTracker {
     // EFFECTS: returns the category with the given label; returns categoryOfNoCategory
     //          if there is no category with the given label
     public Category getCategoryFromLabel(String label) {
-        Category found = null;
+        Category found = categoryOfNoCategory;
 
         for (Category c : allCategories) {
             if (c.hasLabel(label)) {
                 found = c;
             }
-        }
-
-        if (found == null) {
-            return categoryOfNoCategory;
         }
 
         return found;
@@ -158,4 +158,38 @@ public class ExpenseTracker {
 
         return total;
     }
+
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("allExpenses", allExpensesToJson());
+        json.put("allCategories", allCategoriesToJson());
+        json.put("categoryOfNoCategory", categoryOfNoCategory.toJson());
+        return json;
+    }
+
+    // EFFECTS: returns allExpenses in this ExpenseTracker a JSON array
+    private JSONArray allExpensesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Expense e : allExpenses) {
+            jsonArray.put(e.toJson());
+        }
+
+        return jsonArray;
+    }
+
+    // EFFECTS: returns allCategories in this ExpenseTracker a JSON array
+    private JSONArray allCategoriesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Category c : allCategories) {
+            jsonArray.put(c.toJson());
+        }
+
+        return jsonArray;
+    }
+
+
 }

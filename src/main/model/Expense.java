@@ -1,11 +1,14 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 // (Class X) Represents the record of an expense
-public class Expense {
+public class Expense implements Writable {
     public static final String LABEL_OF_NO_CATEGORY = "none"; // ask TA about visibility
     public static final String NAME_OF_NO_PLACE = "unknown place";
 
@@ -84,5 +87,15 @@ public class Expense {
         return daysAgoMessage + " (" + date + ") you spent $"
                 + amount + " at \"" + place + "\" in the category \""
                 + category + "\"";
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("amount", amount);
+        json.put("date", date);
+        json.put("place", place);
+        json.put("category", category);
+        return json;
     }
 }

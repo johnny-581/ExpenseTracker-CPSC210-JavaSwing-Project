@@ -3,12 +3,19 @@ package ui;
 import model.Category;
 import model.Expense;
 import model.ExpenseTracker;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 public class ExpenseTrackerApp {
-    private final ExpenseTracker expenseTracker;
+    private static final String JSON_STORE = "./data/expenseTracker.json";
+    private ExpenseTracker expenseTracker;
     private final Scanner input;
+    private final JsonWriter jsonWriter;
+    private final JsonReader jsonReader;
 
     // MODIFIES: this
     // EFFECTS: initiates the expense tracker application; creates example expenses and categories;
@@ -17,6 +24,8 @@ public class ExpenseTrackerApp {
         expenseTracker = new ExpenseTracker();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
 
         new CreateExamples(expenseTracker); // can be removed
         runExpenseTracker();
@@ -49,33 +58,34 @@ public class ExpenseTrackerApp {
         System.out.println("\tn -> record new expense");
         System.out.println("\te -> see all expenses");
         System.out.println("\tc -> see all categories");
+        System.out.println("\ts -> save expenses and categories to file");
+        System.out.println("\tl -> load expenses and categories from file");
         System.out.println("\tq -> quit");
     }
 
     // MODIFIES: this
     // EFFECTS: processes user input on main menu, provides actions for each command
     private void mainMenuHandleCommand(String command) {
-        switch (command) {
-            case "n":
-                newExpense();
-                break;
-            case "e":
-                if (expenseTracker.hasNoExpense()) {
-                    System.out.println("You have no expenses yet");
-                } else {
-                    seeAllExpenses();
-                }
-                break;
-            case "c":
-                if (expenseTracker.hasNoCategory()) {
-                    System.out.println("There are no categories yet");
-                } else {
-                    seeAllCategories();
-                }
-                break;
-            default:
-                System.out.println("Selection not valid...");
-                break;
+        if (command.equals("n")) {
+            newExpense();
+        } else if (command.equals("e")) {
+            if (expenseTracker.hasNoExpense()) {
+                System.out.println("You have no expenses yet");
+            } else {
+                seeAllExpenses();
+            }
+        } else if (command.equals("c")) {
+            if (expenseTracker.hasNoCategory()) {
+                System.out.println("There are no categories yet");
+            } else {
+                seeAllCategories();
+            }
+        } else if (command.equals("s")) {
+            saveExpenseTracker();
+        } else if (command.equals("l")) {
+            loadExpenseTracker();
+        } else {
+            System.out.println("Selection not valid...");
         }
     }
 
@@ -432,6 +442,29 @@ public class ExpenseTrackerApp {
         for (Category c : allCategories) {
             System.out.println("(" + i + ") " + c.getLabel());
             i++;
+        }
+    }
+
+    // EFFECTS: saves the expense tracker to file
+    private void saveExpenseTracker() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(expenseTracker);
+            jsonWriter.close();
+            System.out.println("Saved your expenses and categories to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads expense tracker from file
+    private void loadExpenseTracker() {
+        try {
+            expenseTracker = jsonReader.read();
+            System.out.println("Loaded your expenses and categories from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
 }
