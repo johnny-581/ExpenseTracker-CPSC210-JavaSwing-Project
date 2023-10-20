@@ -29,18 +29,18 @@ spending habits, which may likely be true for many students like me.
 Expenses:
 - As a user, I want to be able to record an expense (eg. $10) and to set
   its amount, date, place, and category
+- As a user, I want to be able to view a list of all expenses
 - As a user, I want to be able to change the amount, date, place, and
   category of an expense
 - As a user, I want to be able to delete an expense
-- As a user, I want to be able to view a list of all expenses
 
 Categories:
-- As a user, I want to be able to create a new category with a chosen label.
-- As a user, I want to be able to delete a category
+- As a user, I want to be able to create a new category with a chosen label
 - As a user, I want to be able to view a list of all categories and to see a
   list of expenses in each category
 - as a user, I want to be able to see the percentage of money I spent in
   each category
+- As a user, I want to be able to delete a category
 
 Data Persistence:
 - As a user, when I select the quit option from the main menu, I want to be

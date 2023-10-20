@@ -22,15 +22,6 @@ public class ExpenseTrackerApp {
         runExpenseTracker();
     }
 
-    // EFFECTS: displays main menu with options
-    private void displayMenu() {
-        System.out.println("\nSelect from:");
-        System.out.println("\tn -> record new expense");
-        System.out.println("\te -> see all expenses");
-        System.out.println("\tc -> see all categories");
-        System.out.println("\tq -> quit");
-    }
-
     // This Method is based on the runTeller() method in the TellerAppExample
     // MODIFIES: this
     // EFFECTS: processes user input on main menu
@@ -39,22 +30,31 @@ public class ExpenseTrackerApp {
         String command;
 
         while (keepGoing) {
-            displayMenu();
+            displayMainMenu();
             command = input.next().toLowerCase();
 
             if (command.equals("q")) {
                 keepGoing = false;
             } else {
-                processCommand(command);
+                mainMenuHandleCommand(command);
             }
         }
 
         System.out.println("\nGoodbye");
     }
 
+    // EFFECTS: displays main menu with options
+    private void displayMainMenu() {
+        System.out.println("\nSelect from:");
+        System.out.println("\tn -> record new expense");
+        System.out.println("\te -> see all expenses");
+        System.out.println("\tc -> see all categories");
+        System.out.println("\tq -> quit");
+    }
+
     // MODIFIES: this
     // EFFECTS: processes user input on main menu, provides actions for each command
-    private void processCommand(String command) {
+    private void mainMenuHandleCommand(String command) {
         switch (command) {
             case "n":
                 newExpense();
@@ -161,34 +161,33 @@ public class ExpenseTrackerApp {
             System.out.println("f -> finish modification");
 
             selection = input.next().toLowerCase();
-            selection = modifyExpensesHandleSelection(selection, expense);
+            selection = modifyExpensesHandleCommand(selection, expense);
         }
     }
 
     // MODIFIES: this, expense
     // EFFECTS: handles user selection for modifyExpenses()
-    private String modifyExpensesHandleSelection(String selection, Expense expense) {
-        switch (selection) {
-            case "a":
-                expenseSetAmount(expense);
-                break;
-            case "d":
-                expenseSetDate(expense);
-                break;
-            case "p":
-                expenseSetPlace(expense);
-                break;
-            case "c":
-                expenseSetCategory(expense);
-                break;
-        }
-        if (selection.equals("x")) {
+    private String modifyExpensesHandleCommand(String selection, Expense expense) {
+        if (selection.equals("a")) {
+            expenseSetAmount(expense);
+            selection = "";
+            displaysModifiedExpense(expense);
+        } else if (selection.equals("d")) {
+            expenseSetDate(expense);
+            selection = "";
+            displaysModifiedExpense(expense);
+        } else if (selection.equals("p")) {
+            expenseSetPlace(expense);
+            selection = "";
+            displaysModifiedExpense(expense);
+        } else if (selection.equals("c")) {
+            expenseSetCategory(expense);
+            selection = "";
+            displaysModifiedExpense(expense);
+        } else if (selection.equals("x")) {
             expenseTracker.deleteExpense(expense);
             System.out.println("Expense deleted");
             selection = "f";
-        } else {
-            selection = "";
-            displaysModifiedExpense(expense);
         }
         return selection;
     }
@@ -217,27 +216,23 @@ public class ExpenseTrackerApp {
             System.out.println("f -> finish modification");
 
             selection = input.next().toLowerCase();
-            selection = modifyCategoriesHandleSelection(selection, category);
+            selection = modifyCategoriesHandleCommand(selection, category);
         }
     }
 
     // MODIFIES: this, category
     // EFFECTS: handles user selection for modifyCategories()
-    private String modifyCategoriesHandleSelection(String selection, Category category) {
-        switch (selection) {
-            case "e":
-                seeExpensesInCategory(category, category.getLabel());
-                selection = "";
-                break;
-            case "l":
-                categorySetLabel(category);
-                selection = "";
-                break;
-            case "x":
-                expenseTracker.deleteCategory(category);
-                System.out.println("Category deleted");
-                selection = "f";
-                break;
+    private String modifyCategoriesHandleCommand(String selection, Category category) {
+        if (selection.equals("e")) {
+            seeExpensesInCategory(category, category.getLabel());
+            selection = "";
+        } else if (selection.equals("l")) {
+            categorySetLabel(category);
+            selection = "";
+        } else if (selection.equals("x")) {
+            expenseTracker.deleteCategory(category);
+            System.out.println("Category deleted");
+            selection = "f";
         }
         return selection;
     }
@@ -248,7 +243,7 @@ public class ExpenseTrackerApp {
     private void seeExpensesInCategory(Category category, String categoryLabel) {
         String selection = "";
         while (!selection.equals("b")) {
-            System.out.println("\nExpenses in the category " + categoryLabel + ":");
+            System.out.println("\nShowing expenses in the category \"" + categoryLabel + "\":");
             List<Expense> categoryExpenses = category.getExpenses();
             displayExpenses(categoryExpenses);
 
@@ -355,7 +350,7 @@ public class ExpenseTrackerApp {
     // MODIFIES: this, expense
     // EFFECTS: lets the user create a new category to assign to the given expense
     private void newCategory(Expense expense) {
-        System.out.println("Entre the label a new Category: ");
+        System.out.println("Entre the label of a new Category: ");
 
         String label = input.next().toLowerCase();
         if (expenseTracker.categoryExists(label)) {
