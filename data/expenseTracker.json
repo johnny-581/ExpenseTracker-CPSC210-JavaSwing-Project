@@ -1,0 +1,95 @@
+{
+    "categoryOfNoCategory": {
+        "label": "none",
+        "expenses": []
+    },
+    "allCategories": [
+        {
+            "label": "grocery",
+            "expenses": [
+                {
+                    "date": "2023-10-20T00:00",
+                    "amount": 100,
+                    "place": "no frills",
+                    "category": "grocery"
+                },
+                {
+                    "date": "2023-09-20T00:00",
+                    "amount": 20,
+                    "place": "save on food",
+                    "category": "grocery"
+                },
+                {
+                    "date": "2023-10-21T10:44:52.713870",
+                    "amount": 2.5,
+                    "place": "unknown place",
+                    "category": "grocery"
+                }
+            ]
+        },
+        {
+            "label": "clothing",
+            "expenses": [
+                {
+                    "date": "2023-10-13T00:00",
+                    "amount": 55,
+                    "place": "ubc book store",
+                    "category": "clothing"
+                },
+                {
+                    "date": "2023-10-17T00:00",
+                    "amount": 210,
+                    "place": "lululemon",
+                    "category": "clothing"
+                }
+            ]
+        },
+        {
+            "label": "rent",
+            "expenses": [{
+                "date": "2023-10-14T00:00",
+                "amount": 1000,
+                "place": "ubc housing",
+                "category": "rent"
+            }]
+        }
+    ],
+    "allExpenses": [
+        {
+            "date": "2023-10-21T10:44:52.713870",
+            "amount": 2.5,
+            "place": "unknown place",
+            "category": "grocery"
+        },
+        {
+            "date": "2023-10-20T00:00",
+            "amount": 100,
+            "place": "no frills",
+            "category": "grocery"
+        },
+        {
+            "date": "2023-10-17T00:00",
+            "amount": 210,
+            "place": "lululemon",
+            "category": "clothing"
+        },
+        {
+            "date": "2023-10-14T00:00",
+            "amount": 1000,
+            "place": "ubc housing",
+            "category": "rent"
+        },
+        {
+            "date": "2023-10-13T00:00",
+            "amount": 55,
+            "place": "ubc book store",
+            "category": "clothing"
+        },
+        {
+            "date": "2023-09-20T00:00",
+            "amount": 20,
+            "place": "save on food",
+            "category": "grocery"
+        }
+    ]
+}

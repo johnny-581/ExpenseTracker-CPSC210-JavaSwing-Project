@@ -27,7 +27,6 @@ public class ExpenseTrackerApp {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
 
-        new CreateExamples(expenseTracker); // can be removed
         runExpenseTracker();
     }
 

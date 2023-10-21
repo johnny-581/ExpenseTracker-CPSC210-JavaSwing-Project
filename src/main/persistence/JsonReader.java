@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+// Adapted from JsonSerializationDemo
 // Represents a reader that reads ExpenseTracker from JSON data stored in file
 public class JsonReader {
     private final String source;

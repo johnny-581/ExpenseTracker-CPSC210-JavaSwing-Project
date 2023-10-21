@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+// Adapted from JsonSerializationDemo
 // Represents a writer that writes JSON representation of ExpenseTracker to file
 public class JsonWriter {
     private static final int TAB = 4;

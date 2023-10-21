@@ -318,7 +318,7 @@ public class ExpenseTrackerTest {
 
 
 
-    // EFFECTS: creates example expenses and categories containing them
+    // EFFECTS: creates example expenses and categories
     private void initiateExpensesAndCategories() {
         expense1 = new Expense();
         expense2 = new Expense();

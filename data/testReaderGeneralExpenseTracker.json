@@ -1,0 +1,48 @@
+{
+    "categoryOfNoCategory": {
+        "label": "none",
+        "expenses": [{
+            "date": "2023-05-01T00:00",
+            "amount": 55,
+            "place": "place3",
+            "category": "none"
+        }]
+    },
+    "allCategories": [{
+        "label": "grocery",
+        "expenses": [
+            {
+                "date": "2023-10-01T00:00",
+                "amount": 100,
+                "place": "place1",
+                "category": "grocery"
+            },
+            {
+                "date": "2023-01-01T00:00",
+                "amount": 20,
+                "place": "place2",
+                "category": "grocery"
+            }
+        ]
+    }],
+    "allExpenses": [
+        {
+            "date": "2023-10-01T00:00",
+            "amount": 100,
+            "place": "place1",
+            "category": "grocery"
+        },
+        {
+            "date": "2023-01-01T00:00",
+            "amount": 20,
+            "place": "place2",
+            "category": "grocery"
+        },
+        {
+            "date": "2023-05-01T00:00",
+            "amount": 55,
+            "place": "place3",
+            "category": "none"
+        }
+    ]
+}
