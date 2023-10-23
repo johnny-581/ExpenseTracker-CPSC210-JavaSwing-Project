@@ -42,12 +42,6 @@ public class Category implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds the given expense to this category at the given index
-    public void add(int index, Expense e) {
-        expenses.add(index, e);
-    }
-
-    // MODIFIES: this
     // EFFECTS: removes the given expense from this category
     public void remove(Expense e) {
         expenses.remove(e);

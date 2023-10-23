@@ -2,21 +2,15 @@
 
 ## Project Proposal
 
-> **Questions:**  
-> What will the application do?  
-> Who will use it?  
-> Why is this project of interest to you?
-
 This project is an easy-to-use desktop expense tracker.
 The user keeps track of their daily expenses by recording entries of
 expenses into this application. The expenses are organized into
 categories such as grocery, clothing, or tuition. All entries pertaining to
 a particular category can be viewed by clicking on the corresponding
-category icon on the homepage. there will also be a list of all expenses
-on the homepage, as well as a field where the user can input
-a new entry. Additionally, there are options to view weekly spending
-statistics, as will as a statistic showing how much money was spent in
-each category
+category icon. there will also be the option to view a list of all expenses.
+On the homepage, there will be a field where the user can input
+a new entry. Additionally, there is the option to view a statistic showing how
+much money was spent in each category
 
 Myself could be a potential user of this expense tracker. I have tried to
 use similar expense tracking apps on my phone, but found them

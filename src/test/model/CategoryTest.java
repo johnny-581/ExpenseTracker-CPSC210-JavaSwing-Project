@@ -70,24 +70,10 @@ public class CategoryTest {
     }
 
     @Test
-    public void testAddToIndex() {
-        testCategory.add(E1);
-        testCategory.add(0, E2);
-        testCategory.add(1, E3);
-
-        List<Expense> expenses = testCategory.getExpenses();
-        assertEquals(3, expenses.size());
-        assertEquals(E2, expenses.get(0));
-        assertEquals(E3, expenses.get(1));
-        assertEquals(E1, expenses.get(2));
-    }
-
-    @Test
     public void testRemoveOne() {
         testCategory.add(E1);
         testCategory.add(E2);
         testCategory.add(E3);
-
         testCategory.remove(E2);
 
         List<Expense> expenses = testCategory.getExpenses();
@@ -101,7 +87,6 @@ public class CategoryTest {
         testCategory.add(E1);
         testCategory.add(E2);
         testCategory.add(E3);
-
         testCategory.remove(E1);
         testCategory.remove(E2);
         testCategory.remove(E3);
@@ -113,7 +98,6 @@ public class CategoryTest {
     @Test
     public void testGetTotalOne() {
         testCategory.add(E1);
-
         assertEquals(100, testCategory.totalAmount());
     }
 
@@ -122,7 +106,6 @@ public class CategoryTest {
         testCategory.add(E1);
         testCategory.add(E2);
         testCategory.add(E3);
-
         assertEquals(100 + 20 + 5.5, testCategory.totalAmount());
     }
 }

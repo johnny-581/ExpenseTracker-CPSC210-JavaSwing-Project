@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
+// Represents the structure of the expense tracker app
 public class ExpenseTrackerApp {
     private static final String JSON_STORE = "./data/expenseTracker.json";
     private ExpenseTracker expenseTracker;
