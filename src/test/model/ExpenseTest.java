@@ -56,17 +56,27 @@ class ExpenseTest {
         E1.setDate(today.toString());
         E1.setPlace("ubc");
         E1.setCategory("clothing");
-        assertEquals("today (" + today + ") you spent $100.0 at \"ubc\" "
-                        + "in the category \"clothing\"", E1.getSummary());
+        assertEquals("today (" + today + ") you spent $100.0 at \"ubc\"" +
+                " in the category \"clothing\"", E1.getSummary());
     }
 
     @Test
-    public void testGetSummaryNotToday() {
+    public void testGetSummaryYesterday() {
         LocalDate yesterday = LocalDate.now().minusDays(1);
         E1.setDate(yesterday.toString());
         E1.setPlace("ubc");
         E1.setCategory("clothing");
-        assertEquals("1 day(s) ago (" + yesterday + ") you spent $100.0 at \"ubc\" "
-                + "in the category \"clothing\"", E1.getSummary());
+        assertEquals("yesterday (" + yesterday + ") you spent $100.0 at \"ubc\"" +
+                " in the category \"clothing\"", E1.getSummary());
+    }
+
+    @Test
+    public void testGetSummaryThreeDaysAgo() {
+        LocalDate threeDaysAgo = LocalDate.now().minusDays(3);
+        E1.setDate(threeDaysAgo.toString());
+        E1.setPlace("ubc");
+        E1.setCategory("clothing");
+        assertEquals("3 days ago (" + threeDaysAgo + ") you spent $100.0 at \"ubc\"" +
+                " in the category \"clothing\"", E1.getSummary());
     }
 }

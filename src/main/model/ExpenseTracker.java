@@ -56,8 +56,7 @@ public class ExpenseTracker implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds the given expense to the given category into the front of the list
-    //          (since its date is the most recent)
+    // EFFECTS: adds the given expense to the given category
     public void addExpenseToCategory(Expense expense, Category category) {
         String label = category.getLabel();
         expense.setCategory(label);

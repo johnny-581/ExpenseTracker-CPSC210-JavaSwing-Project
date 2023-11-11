@@ -3,6 +3,10 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -77,16 +81,17 @@ public class Expense implements Writable {
     // EFFECTS: returns a summarization of the Expense as a string
     public String getSummary() {
         long numDaysAgo = getDaysPriorToToday();
-        String daysAgoMessage = numDaysAgo + " day(s) ago";
+        String daysAgoMessage = numDaysAgo + " days ago";
 
         if (numDaysAgo == 0) {
             daysAgoMessage = "today";
+        } if (numDaysAgo == 1) {
+            daysAgoMessage = "yesterday";
         }
 
         LocalDate date = this.date.toLocalDate();
         return daysAgoMessage + " (" + date + ") you spent $"
-                + amount + " at \"" + place + "\" in the category \""
-                + category + "\"";
+                + amount + " at \"" + place + "\"" + " in the category \"" + category;
     }
 
     @Override
