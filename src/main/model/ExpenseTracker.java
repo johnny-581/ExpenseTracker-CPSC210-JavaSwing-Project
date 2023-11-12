@@ -10,20 +10,21 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static model.Expense.LABEL_OF_NO_CATEGORY;
 
 // Represents an expense tracker with a list of expenses and a list of categories,
 // as well as a category that contains all expenses without a category.
 public class ExpenseTracker implements Writable {
+    public static final String LABEL_OF_NO_CATEGORY = "none";
     private final List<Expense> allExpenses;
     private final List<Category> allCategories;
-    private final Category categoryOfNoCategory; // not in allCategories
 
-    // EFFECTS: constructs a new expenseTracker with no expenses nor categories recorded
+    // EFFECTS: constructs a new expenseTracker with no expenses added; a categoryOfNoCategory
+    //          is added as the first item in allCategories, which will always stay at this position
     public ExpenseTracker() {
         allExpenses = new ArrayList<>();
         allCategories = new ArrayList<>();
-        categoryOfNoCategory = new Category(LABEL_OF_NO_CATEGORY);
+        Category categoryOfNoCategory = new Category(LABEL_OF_NO_CATEGORY);
+        addCategory(categoryOfNoCategory);
     }
 
     public List<Expense> getAllExpenses() {
@@ -34,8 +35,8 @@ public class ExpenseTracker implements Writable {
         return allCategories;
     }
 
-    public Category getCategoryOfNoCategory() {
-        return categoryOfNoCategory;
+    public Category getCONC() {
+        return allCategories.get(0);
     }
 
     // EFFECTS: given index i, returns the ith category in allCategory
@@ -44,9 +45,12 @@ public class ExpenseTracker implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds the given expense, then sort all expenses
+    // EFFECTS: adds the given expense to the expense tracker, then sort all expenses
+    //          chronologically from most recent to oldest
     public void addExpense(Expense expense) {
         allExpenses.add(expense);
+        allExpenses.sort(Comparator.comparing(Expense::getDate));
+        Collections.reverse(allExpenses);
     }
 
     // MODIFIES: this
@@ -55,27 +59,12 @@ public class ExpenseTracker implements Writable {
         allCategories.add(category);
     }
 
-    // MODIFIES: this
-    // EFFECTS: adds the given expense to the given category
-    public void addExpenseToCategory(Expense expense, Category category) {
-        String label = category.getLabel();
-        expense.setCategory(label);
-        category.add(expense);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: adds the given expense to expensesWithNoCategory
-    public void addExpenseToNoCategory(Expense expense) {
-        categoryOfNoCategory.add(expense);
-    }
-
     // MODIFIES: this, expense
     // EFFECTS: deletes the given expense
     public void deleteExpense(Expense expense) {
         allExpenses.remove(expense);
-        String categoryLabel = expense.getCategory();
-        Category category = getCategoryFromLabel(categoryLabel);
-        category.remove(expense);
+        Category category = expense.getCategory();
+        category.removeExpense(expense);
     }
 
     // MODIFIES: this, category
@@ -84,14 +73,29 @@ public class ExpenseTracker implements Writable {
         allCategories.remove(category);
 
         for (Expense e : category.getExpenses()) {
-            e.setNoCategory();
+            e.removeCategory();
         }
+    }
+
+    // EFFECTS: returns ture if no expenses are created yet (allExpenses is empty)
+    public boolean hasNoExpense() {
+        return allExpenses.isEmpty();
+    }
+
+    // EFFECTS: returns ture if there is no categories other than the categoryOfNoCategory
+    public boolean hasNoCategory() {
+        return allCategories.size() <= 1;
+    }
+
+    // EFFECTS: returns true if a category with the given label already exists
+    public boolean categoryExists(String label) {
+        return !getCategoryFromLabel(label).equals(getCONC());
     }
 
     // EFFECTS: returns the category with the given label; returns categoryOfNoCategory
     //          if there is no category with the given label
     public Category getCategoryFromLabel(String label) {
-        Category found = categoryOfNoCategory;
+        Category found = getCONC();
 
         for (Category c : allCategories) {
             if (c.hasLabel(label)) {
@@ -100,41 +104,6 @@ public class ExpenseTracker implements Writable {
         }
 
         return found;
-    }
-
-    // EFFECTS: returns ture if no expenses are created yet (allExpenses is empty)
-    public boolean hasNoExpense() {
-        return allExpenses.isEmpty();
-    }
-
-    // EFFECTS: returns ture if no categories are created yet (allCategory is empty)
-    public boolean hasNoCategory() {
-        return allCategories.isEmpty();
-    }
-
-    // EFFECTS: returns true if a category with the given label already exists
-    public boolean categoryExists(String label) {
-        return getCategoryFromLabel(label) != categoryOfNoCategory;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: changes all expenses with the old category label to having the new
-    //          label.
-    public void changeCategoryForExpenses(String oldLabel, String newLabel) {
-        for (Expense e : allExpenses) {
-            if (e.getCategory().equals(oldLabel)) {
-                e.setCategory(newLabel);
-            }
-        }
-    }
-
-    // REQUIRES: the given list of expenses is not empty
-    // MODIFIES: this
-    // EFFECTS: sorts the given list of expenses chronologically from most recent
-    //          to oldest
-    public void sortExpenses(List<Expense> expenses) {
-        expenses.sort(Comparator.comparing(Expense::getDate));
-        Collections.reverse(expenses);
     }
 
     // EFFECTS: calculates the percentage of money spent in the given category
@@ -164,11 +133,10 @@ public class ExpenseTracker implements Writable {
         JSONObject json = new JSONObject();
         json.put("allExpenses", allExpensesToJson());
         json.put("allCategories", allCategoriesToJson());
-        json.put("categoryOfNoCategory", categoryOfNoCategory.toJson());
         return json;
     }
 
-    // EFFECTS: returns allExpenses in this ExpenseTracker a JSON array
+    // EFFECTS: returns allExpenses in this ExpenseTracker as a JSON array
     private JSONArray allExpensesToJson() {
         JSONArray jsonArray = new JSONArray();
 
@@ -179,7 +147,7 @@ public class ExpenseTracker implements Writable {
         return jsonArray;
     }
 
-    // EFFECTS: returns allCategories in this ExpenseTracker a JSON array
+    // EFFECTS: returns allCategories in this ExpenseTracker as a JSON array
     private JSONArray allCategoriesToJson() {
         JSONArray jsonArray = new JSONArray();
 

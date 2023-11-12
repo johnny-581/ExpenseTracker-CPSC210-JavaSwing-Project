@@ -1,17 +1,13 @@
 package ui;
 
-import model.Expense;
 import model.ExpenseTracker;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.geom.Ellipse2D;
-import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -20,8 +16,6 @@ public class ExpenseTrackerGUI extends JPanel {
     private static final String JSON_STORE = "./data/expenseTracker.json";
     private static final String LOAD_DATA_MESSAGE = "Do you want to load expenses and categories from file?";
     private static final String SAVE_CHANGES_MESSAGE = "Do you want to save your changes?";
-//    public static final int ICON_DIAMETER = 10;
-//    public static Color ICON_COLOR = Color.GREEN;
 
     private ExpenseTracker expenseTracker;
     private final Scanner input;
@@ -54,17 +48,6 @@ public class ExpenseTrackerGUI extends JPanel {
         frame.pack();
         frame.setVisible(true);
     }
-
-//    // EFFECTS: returns a filled circle of color representing the expense's category // !!!
-//    public ImageIcon getIcon(Expense expense) {
-//        BufferedImage icon = new BufferedImage(ICON_DIAMETER, ICON_DIAMETER, BufferedImage.TYPE_INT_ARGB);
-//        Graphics2D g2d = icon.createGraphics();
-//
-//        g2d.setColor(ICON_COLOR);  // Change the color as needed
-//        g2d.fill(new Ellipse2D.Double(0, 0, ICON_DIAMETER, ICON_DIAMETER));
-//
-//        return new ImageIcon(icon);
-//    }
 
     // EFFECTS: reminds the user to load and save data on startup and closing
     private WindowListener createWindowListener() {

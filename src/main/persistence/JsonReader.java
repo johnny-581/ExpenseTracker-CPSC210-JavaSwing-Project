@@ -6,6 +6,7 @@ import model.ExpenseTracker;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -44,6 +45,7 @@ public class JsonReader {
     // EFFECTS: parses ExpenseTracker from JSON object and returns it
     private ExpenseTracker parseExpenseTracker(JSONObject jsonObject) {
         ExpenseTracker et = new ExpenseTracker();
+        et.deleteCategory(et.getCONC());
         JSONArray jsonCategories = jsonObject.getJSONArray("allCategories");
         JSONArray jsonExpenses = jsonObject.getJSONArray("allExpenses");
         addAllCategories(et, jsonCategories);
@@ -64,8 +66,19 @@ public class JsonReader {
     // EFFECTS: parses category from JSON array and adds it to expense tracker
     private void addCategory(ExpenseTracker et, JSONObject jsonCategory) {
         String label = jsonCategory.getString("label");
+        Color iconColor = parseColor(jsonCategory);
         Category category = new Category(label);
+        category.setIconColor(iconColor);
         et.addCategory(category);
+    }
+
+    private Color parseColor(JSONObject jsonCategory) {
+        JSONObject jsonColor = jsonCategory.getJSONObject("iconColor");
+        int red = jsonColor.getInt("red");
+        int green = jsonColor.getInt("green");
+        int blue = jsonColor.getInt("blue");
+
+        return new Color(red, green, blue);
     }
 
     // MODIFIES: et
@@ -84,15 +97,12 @@ public class JsonReader {
         String date = jsonExpense.getString("date").substring(0, 10);
         String place = jsonExpense.getString("place");
         String categoryLabel = jsonExpense.getString("category");
+        Category category = et.getCategoryFromLabel(categoryLabel);
 
-        Expense expense = new Expense();
-        expense.setAmount(amount);
+        Expense expense = new Expense(et.getCONC(), amount);
         expense.setDate(date);
         expense.setPlace(place);
-        expense.setCategory(categoryLabel);
+        expense.setCategory(category);
         et.addExpense(expense);
-
-        Category category = et.getCategoryFromLabel(categoryLabel);
-        et.addExpenseToCategory(expense, category);
     }
 }

@@ -6,9 +6,6 @@ import model.ExpenseTracker;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class ExpenseList implements ListSelectionListener {
     private ExpenseTracker expenseTracker;

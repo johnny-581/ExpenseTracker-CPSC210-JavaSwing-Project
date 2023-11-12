@@ -1,8 +1,12 @@
 {
-    "categoryOfNoCategory": {
+    "allCategories": [{
+        "iconColor": {
+            "red": 192,
+            "green": 92,
+            "blue": 183
+        },
         "label": "none",
         "expenses": []
-    },
-    "allCategories": [],
+    }],
     "allExpenses": []
 }

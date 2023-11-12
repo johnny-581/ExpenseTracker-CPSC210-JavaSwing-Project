@@ -13,18 +13,45 @@ import java.time.temporal.ChronoUnit;
 
 // (Class X) Represents the record of an expense
 public class Expense implements Writable {
-    public static final String LABEL_OF_NO_CATEGORY = "none"; // ask TA about visibility
     public static final String NAME_OF_NO_PLACE = "unknown place";
+    public static final int ICON_DIAMETER = 10;
 
     private double amount;
     private LocalDateTime date;
     private String place;
-    private String category;
+    private Category category;
 
-    // EFFECTS: creates a new expense of $0 and sets its date to today
-    public Expense() {
-        this.amount = 0;
+    public final Category categoryOfNoCategory;
+
+    // EFFECTS: creates a new expense of the given amount with no place nor category
+    //          and sets its date and time to now
+    public Expense(Category categoryOfNoCategory, double amount) {
+        this.amount = amount;
         this.date = LocalDateTime.now();
+        this.place = NAME_OF_NO_PLACE;
+        this.category = categoryOfNoCategory;
+        categoryOfNoCategory.addExpense(this);
+        this.categoryOfNoCategory = categoryOfNoCategory;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Category getCONC() {
+        return categoryOfNoCategory;
     }
 
     public void setAmount(double amount) {
@@ -40,10 +67,6 @@ public class Expense implements Writable {
         this.place = place;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     // MODIFIES: this
     // EFFECTS: sets the expense as having no place
     public void setNoPlace() {
@@ -51,25 +74,35 @@ public class Expense implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: sets the expense as having no category
-    public void setNoCategory() {
-        setCategory(LABEL_OF_NO_CATEGORY);
+    // EFFECTS: replace the current category in the field with the given new category;
+    //          also removes the expense from the old category and adds it to the new category
+    public void setCategory(Category category) {
+        Category oldCategory = this.category;
+        this.category = category;
+
+        if (oldCategory.contains(this)) {
+            oldCategory.removeExpense(this);
+        }
+
+        if (!category.contains(this)) {
+            category.addExpense(this);
+        }
     }
 
-    public double getAmount() {
-        return amount;
-    }
+    // MODIFIES: this
+    // EFFECTS: replace the current category in the field with the categoryOfNoCategory;
+    //          also removes the expense from its category
+    public void removeCategory() {
+        Category oldCategory = this.category;
+        this.category = categoryOfNoCategory;
 
-    public LocalDateTime getDate() {
-        return date;
-    }
+        if (oldCategory.contains(this)) {
+            oldCategory.removeExpense(this);
+        }
 
-    public String getPlace() {
-        return place;
-    }
-
-    public String getCategory() {
-        return category;
+        if (!categoryOfNoCategory.contains(this)) {
+            categoryOfNoCategory.addExpense(this);
+        }
     }
 
     // EFFECTS: returns the period in days from the date of the expense to today
@@ -91,7 +124,19 @@ public class Expense implements Writable {
 
         LocalDate date = this.date.toLocalDate();
         return daysAgoMessage + " (" + date + ") you spent $"
-                + amount + " at \"" + place + "\"" + " in the category \"" + category;
+                + amount + " at \"" + place + "\"" + " in the category \""
+                + category.getLabel() + "\"";
+    }
+
+    // EFFECTS: returns a filled circle with a color representing the expense's category
+    public ImageIcon getIcon() {
+        BufferedImage icon = new BufferedImage(ICON_DIAMETER, ICON_DIAMETER, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = icon.createGraphics();
+
+        g2d.setColor(category.getIconColor());
+        g2d.fill(new Ellipse2D.Double(0, 0, ICON_DIAMETER, ICON_DIAMETER));
+
+        return new ImageIcon(icon);
     }
 
     @Override
@@ -100,7 +145,7 @@ public class Expense implements Writable {
         json.put("amount", amount);
         json.put("date", date);
         json.put("place", place);
-        json.put("category", category);
+        json.put("category", category.getLabel());
         return json;
     }
 }

@@ -5,9 +5,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static model.ExpenseTracker.LABEL_OF_NO_CATEGORY;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CategoryTest {
+    Category categoryOfNoCategory;
     Category testCategory;
     Expense E1;
     Expense E2;
@@ -15,13 +17,11 @@ public class CategoryTest {
 
     @BeforeEach
     public void runBefore() {
+        categoryOfNoCategory = new Category(LABEL_OF_NO_CATEGORY);
         testCategory = new Category("food");
-        E1 = new Expense();
-        E2 = new Expense();
-        E3 = new Expense();
-        E1.setAmount(100);
-        E2.setAmount(20);
-        E3.setAmount(5.5);
+        E1 = new Expense(categoryOfNoCategory, 100);
+        E2 = new Expense(categoryOfNoCategory, 20);
+        E3 = new Expense(categoryOfNoCategory, 5.5);
 
     }
 
@@ -29,6 +29,7 @@ public class CategoryTest {
     public void testConstructor() {
         assertEquals("food", testCategory.getLabel());
         assertEquals(0, testCategory.getExpenses().size());
+        assertNotNull(testCategory.getIconColor());
     }
 
     @Test
@@ -48,64 +49,78 @@ public class CategoryTest {
     }
 
     @Test
-    public void testAddOne() {
-        testCategory.add(E1);
+    public void testAddOneExpense() {
+        testCategory.addExpense(E1);
 
         List<Expense> expenses = testCategory.getExpenses();
         assertEquals(1, expenses.size());
-        assertEquals(E1, expenses.get(0));
+        assertTrue(testCategory.contains(E1));
+        assertFalse(categoryOfNoCategory.contains(E1));
+        assertEquals(testCategory, E1.getCategory());
     }
 
     @Test
-    public void testAddMultiple() {
-        testCategory.add(E1);
-        testCategory.add(E2);
-        testCategory.add(E3);
+    public void testAddMultipleExpenses() {
+        testCategory.addExpense(E1);
+        testCategory.addExpense(E2);
+        testCategory.addExpense(E3);
 
         List<Expense> expenses = testCategory.getExpenses();
         assertEquals(3, expenses.size());
-        assertEquals(E1, expenses.get(0));
-        assertEquals(E2, expenses.get(1));
-        assertEquals(E3, expenses.get(2));
+        assertTrue(testCategory.contains(E1));
+        assertTrue(testCategory.contains(E2));
+        assertTrue(testCategory.contains(E3));
+        assertFalse(categoryOfNoCategory.contains(E1));
+        assertFalse(categoryOfNoCategory.contains(E2));
+        assertFalse(categoryOfNoCategory.contains(E3));
+        assertEquals(testCategory, E1.getCategory());
+        assertEquals(testCategory, E2.getCategory());
+        assertEquals(testCategory, E3.getCategory());
     }
 
     @Test
-    public void testRemoveOne() {
-        testCategory.add(E1);
-        testCategory.add(E2);
-        testCategory.add(E3);
-        testCategory.remove(E2);
+    public void testRemoveOneExpense() {
+        testCategory.addExpense(E1);
+        testCategory.addExpense(E2);
+        testCategory.addExpense(E3);
+        testCategory.removeExpense(E2);
 
         List<Expense> expenses = testCategory.getExpenses();
         assertEquals(2, expenses.size());
-        assertEquals(E1, expenses.get(0));
-        assertEquals(E3, expenses.get(1));
+        assertTrue(testCategory.contains(E1));
+        assertFalse(testCategory.contains(E2));
+        assertTrue(testCategory.contains(E3));
+        assertFalse(categoryOfNoCategory.contains(E1));
+        assertTrue(categoryOfNoCategory.contains(E2));
+        assertFalse(categoryOfNoCategory.contains(E3));
+        assertEquals(testCategory, E1.getCategory());
+        assertEquals(categoryOfNoCategory, E2.getCategory());
+        assertEquals(testCategory, E3.getCategory());
     }
 
     @Test
-    public void testRemoveAll() {
-        testCategory.add(E1);
-        testCategory.add(E2);
-        testCategory.add(E3);
-        testCategory.remove(E1);
-        testCategory.remove(E2);
-        testCategory.remove(E3);
+    public void testContainsTrue() {
+        testCategory.addExpense(E1);
+        assertTrue(testCategory.contains(E1));
+    }
 
-        List<Expense> expenses = testCategory.getExpenses();
-        assertEquals(0, expenses.size());
+    @Test
+    public void testContainsFalse() {
+        testCategory.addExpense(E1);
+        assertFalse(testCategory.contains(E2));
     }
 
     @Test
     public void testGetTotalOne() {
-        testCategory.add(E1);
+        testCategory.addExpense(E1);
         assertEquals(100, testCategory.totalAmount());
     }
 
     @Test
     public void testGetTotalMultiple() {
-        testCategory.add(E1);
-        testCategory.add(E2);
-        testCategory.add(E3);
+        testCategory.addExpense(E1);
+        testCategory.addExpense(E2);
+        testCategory.addExpense(E3);
         assertEquals(100 + 20 + 5.5, testCategory.totalAmount());
     }
 }

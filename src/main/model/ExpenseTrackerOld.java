@@ -1,7 +1,5 @@
 //package model;
 //
-//package model;
-//
 //import org.json.JSONArray;
 //import org.json.JSONObject;
 //import persistence.Writable;
@@ -16,7 +14,7 @@
 //
 //// Represents an expense tracker with a list of expenses and a list of categories,
 //// as well as a category that contains all expenses without a category.
-//public class ExpenseTrackerNew implements Writable {
+//public class ExpenseTracker implements Writable {
 //    private final List<Expense> allExpenses;
 //    private final List<Category> allCategories;
 //    private final Category categoryOfNoCategory; // not in allCategories
@@ -34,6 +32,10 @@
 //
 //    public List<Category> getAllCategories() {
 //        return allCategories;
+//    }
+//
+//    public Category getCategoryOfNoCategory() {
+//        return categoryOfNoCategory;
 //    }
 //
 //    // EFFECTS: given index i, returns the ith category in allCategory
@@ -58,13 +60,13 @@
 //    public void addExpenseToCategory(Expense expense, Category category) {
 //        String label = category.getLabel();
 //        expense.setCategory(label);
-//        category.add(expense);
+//        category.addExpense(expense);
 //    }
 //
 //    // MODIFIES: this
 //    // EFFECTS: adds the given expense to expensesWithNoCategory
 //    public void addExpenseToNoCategory(Expense expense) {
-//        categoryOfNoCategory.add(expense);
+//        categoryOfNoCategory.addExpense(expense);
 //    }
 //
 //    // MODIFIES: this, expense
@@ -73,7 +75,7 @@
 //        allExpenses.remove(expense);
 //        String categoryLabel = expense.getCategory();
 //        Category category = getCategoryFromLabel(categoryLabel);
-//        category.remove(expense);
+//        category.removeExpense(expense);
 //    }
 //
 //    // MODIFIES: this, category
