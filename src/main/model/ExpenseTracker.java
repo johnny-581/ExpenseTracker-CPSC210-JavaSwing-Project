@@ -60,9 +60,11 @@ public class ExpenseTracker implements Writable {
     }
 
     // MODIFIES: this, expense
-    // EFFECTS: deletes the given expense
-    public void deleteExpense(Expense expense) {
-        allExpenses.remove(expense);
+    // EFFECTS: deletes the expense at the given index
+    public void deleteExpense(int index) {
+        Expense expense = allExpenses.get(index);
+        allExpenses.remove(index);
+
         Category category = expense.getCategory();
         category.removeExpense(expense);
     }
@@ -89,13 +91,13 @@ public class ExpenseTracker implements Writable {
 
     // EFFECTS: returns true if a category with the given label already exists
     public boolean categoryExists(String label) {
-        return !getCategoryFromLabel(label).equals(getCONC());
+        return getCategoryFromLabel(label) != null;
     }
 
-    // EFFECTS: returns the category with the given label; returns categoryOfNoCategory
+    // EFFECTS: returns the category with the given label; returns null
     //          if there is no category with the given label
     public Category getCategoryFromLabel(String label) {
-        Category found = getCONC();
+        Category found = null;
 
         for (Category c : allCategories) {
             if (c.hasLabel(label)) {

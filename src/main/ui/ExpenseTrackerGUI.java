@@ -1,52 +1,108 @@
 package ui;
 
+import model.Expense;
 import model.ExpenseTracker;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
 
-public class ExpenseTrackerGUI extends JPanel {
+public class ExpenseTrackerGUI extends JPanel implements ActionListener {
     private static final String JSON_STORE = "./data/expenseTracker.json";
     private static final String LOAD_DATA_MESSAGE = "Do you want to load expenses and categories from file?";
     private static final String SAVE_CHANGES_MESSAGE = "Do you want to save your changes?";
+    private static final String RECORD_STRING = "Record New Expense";
+    private static final String DELETE_STRING = "Delete Selected";
+    private static final String NEW_EXPENSE_DIALOG_TITLE = "New Expense";
+    private static final String EDIT_EXPENSE_DIALOG_TITLE = "Edit Expense";
 
     private ExpenseTracker expenseTracker;
-    private final Scanner input;
     private final JsonWriter jsonWriter;
     private final JsonReader jsonReader;
     private JFrame frame;
+    private ExpenseList expenseList;
+    private JButton recordButton;
+    private JButton deleteButton;
 
+    // EFFECTS: constructs an expense tracker GUI
     public ExpenseTrackerGUI() {
         expenseTracker = new ExpenseTracker();
-        input = new Scanner(System.in);
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
+        recordButton = new JButton(RECORD_STRING);
+        deleteButton = new JButton(DELETE_STRING);
 
-        createAndShowGUI();
-    }
-
-    // Method adapted from Java Swing ListDemoProject
-    // EFFECTS: creates and displays the main frame
-    private void createAndShowGUI() {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setOpaque(true); //content panes must be opaque
+        recordButton.setActionCommand(RECORD_STRING);
+        deleteButton.setActionCommand(DELETE_STRING);
+        recordButton.addActionListener(this);
+        deleteButton.addActionListener(this);
 
         frame = new JFrame("Your Expense Tracker");
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        frame.setContentPane(this);
         frame.addWindowListener(createWindowListener());
-
-        add((new ExpenseList(expenseTracker).getList()));
-
-        frame.pack();
+        frame.setContentPane(this);
+        frame.setSize(700, 500);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    // EFFECTS: adds components to the content pane
+    private void buildContentPane() {
+        setLayout(new BorderLayout());
+//        setBorder(new EmptyBorder(15, 15, 15, 15));
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        buttonPanel.add(Box.createVerticalGlue());
+        buttonPanel.add(recordButton);
+        buttonPanel.add(deleteButton);
+        buttonPanel.add(Box.createVerticalGlue());
+        add(buttonPanel, BorderLayout.CENTER);
+
+        ImageIcon sampleImage = new ImageIcon(System.getProperty("user.dir") + "/images/SamplePieChart.png");
+        JLabel imageLabel = new JLabel(sampleImage);
+        add(imageLabel, BorderLayout.EAST);
+
+        expenseList = (new ExpenseList(expenseTracker, deleteButton));
+        addMouseListenerToList();
+        add(new JScrollPane(expenseList.getList()), BorderLayout.SOUTH);
+
+        setOpaque(true);
+        revalidate();
+        repaint();
+    }
+
+    // MODIFIES: this, expenseList, expenseTracker
+    // EFFECTS: adds mouse listener to the expense list that listens for double click
+    private void addMouseListenerToList() {
+        expenseList.getList().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int index = expenseList.getList().locationToIndex(e.getPoint());
+                    Expense selectedExpense = expenseTracker.getAllExpenses().get(index);
+                    new ExpenseInfoDialog(expenseList, expenseTracker, selectedExpense, EDIT_EXPENSE_DIALOG_TITLE);
+                }
+            }
+        });
+    }
+
+    // MODIFIES: this, expenseList, expenseTracker
+    // EFFECTS: Handles button clicks
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals(RECORD_STRING)) {
+            Expense expense = new Expense(expenseTracker.getCONC(), 0);
+            new ExpenseInfoDialog(expenseList, expenseTracker, expense, NEW_EXPENSE_DIALOG_TITLE);
+        }
+        if (e.getActionCommand().equals(DELETE_STRING)) {
+            expenseList.deleteExpense();
+        }
     }
 
     // EFFECTS: reminds the user to load and save data on startup and closing
@@ -64,6 +120,7 @@ public class ExpenseTrackerGUI extends JPanel {
         };
     }
 
+    // MODIFIES: this, expenseList, expenseTracker
     // EFFECTS: displays dialog asking whether to load data
     private void askToLoadData() {
         int choice = JOptionPane.showConfirmDialog(frame, LOAD_DATA_MESSAGE,
@@ -72,6 +129,8 @@ public class ExpenseTrackerGUI extends JPanel {
         if (choice == JOptionPane.YES_OPTION) {
             loadExpenseTracker();
         }
+
+        buildContentPane();
     }
 
     // EFFECTS: displays dialog asking whether to save changes

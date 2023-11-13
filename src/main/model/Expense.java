@@ -1,5 +1,7 @@
 package model;
 
+import Exceptions.InvalidAmountException;
+import Exceptions.InvalidDateException;
 import org.json.JSONObject;
 import persistence.Writable;
 
@@ -54,8 +56,20 @@ public class Expense implements Writable {
         return categoryOfNoCategory;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setAmount(String amount) throws InvalidAmountException {
+        double newAmount = 0;
+
+        try {
+             newAmount = Double.parseDouble(amount);
+        } catch (NumberFormatException e) {
+            throw new InvalidAmountException();
+        }
+
+        if (newAmount <= 0) {
+            throw new InvalidAmountException();
+        }
+
+        this.amount = newAmount;
     }
 
     // REQUIRES: date can't be in the future

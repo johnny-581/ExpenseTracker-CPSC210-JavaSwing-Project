@@ -93,7 +93,7 @@ public class ExpenseTrackerTest {
         initiateExpensesAndCategories();
         addExpensesAndCategories();
         addExpensesToCategories();
-        expenseTracker.deleteExpense(expense1);
+        expenseTracker.deleteExpense(0);
 
         List<Expense> allExpenses = expenseTracker.getAllExpenses();
         assertEquals(2, allExpenses.size());

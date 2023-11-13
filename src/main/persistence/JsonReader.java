@@ -1,5 +1,6 @@
 package persistence;
 
+import Exceptions.InvalidDateException;
 import model.Category;
 import model.Expense;
 import model.ExpenseTracker;
