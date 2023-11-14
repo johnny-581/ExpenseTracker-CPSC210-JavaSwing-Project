@@ -46,7 +46,7 @@ public class JsonReaderTest extends JsonTest {
             ExpenseTracker et = reader.read();
             assertEquals(0, et.getAllExpenses().size());
             assertEquals(1, et.getAllCategories().size());
-            assertEquals(0, et.getCONC().getExpenses().size());
+            assertEquals(0, et.getCoNC().getExpenses().size());
         } catch (IOException e) {
             fail("Couldn't read from file");
         }
@@ -59,7 +59,7 @@ public class JsonReaderTest extends JsonTest {
             ExpenseTracker et = reader.read();
             List<Expense> allExpenses = et.getAllExpenses();
             List<Category> allCategories = et.getAllCategories();
-            Category categoryOfNoCategory = et.getCONC();
+            Category categoryOfNoCategory = et.getCoNC();
             assertEquals(3, et.getAllExpenses().size());
             assertEquals(2, et.getAllCategories().size());
             checkExpense(allExpenses.get(0), 100, date1, "place1", category1);

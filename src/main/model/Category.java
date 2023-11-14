@@ -90,13 +90,13 @@ public class Category implements Writable {
     // EFFECTS: returns a new random color
     private Color generateRandomColor() {
         Random random = new Random();
-        int red = random.nextInt(256);
-        int green = random.nextInt(256);
-        int blue = random.nextInt(256);
+        int red = random.nextInt(230) + 20;
+        int green = random.nextInt(230) + 20;
+        int blue = random.nextInt(230) + 20;
 
-        return (label.equals(LABEL_OF_NO_CATEGORY)) ?
-                new Color(COLOR_OF_NO_CATEGORY, COLOR_OF_NO_CATEGORY, COLOR_OF_NO_CATEGORY) :
-                new Color(red, green, blue);
+        return (label.equals(LABEL_OF_NO_CATEGORY))
+                ? new Color(COLOR_OF_NO_CATEGORY, COLOR_OF_NO_CATEGORY, COLOR_OF_NO_CATEGORY)
+                : new Color(red, green, blue);
     }
 
 

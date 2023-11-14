@@ -1,4 +1,4 @@
-package Exceptions;
+package model.exceptions;
 
 public class InvalidDateException extends InvalidInputException {
     public InvalidDateException() {

@@ -20,7 +20,7 @@ public class ExpenseTrackerTest {
     @BeforeEach
     public void runBefore() {
         expenseTracker = new ExpenseTracker();
-        categoryOfNoCategory =  expenseTracker.getCONC();
+        categoryOfNoCategory =  expenseTracker.getCoNC();
     }
 
     @Test
@@ -28,7 +28,7 @@ public class ExpenseTrackerTest {
         assertTrue(expenseTracker.getAllExpenses().isEmpty());
         List<Category> categories = expenseTracker.getAllCategories();
         assertEquals(1, categories.size());
-        assertTrue(categories.contains(expenseTracker.getCONC()));
+        assertTrue(categories.contains(expenseTracker.getCoNC()));
     }
 
     @Test

@@ -27,7 +27,7 @@ class ExpenseTest {
         assertEquals(LocalDate.now(), E1.getDate().toLocalDate());
         assertEquals(NAME_OF_NO_PLACE, E1.getPlace());
         assertEquals(categoryOfNoCategory, E1.getCategory());
-        assertEquals(categoryOfNoCategory, E1.getCONC());
+        assertEquals(categoryOfNoCategory, E1.getCoNC());
     }
 
     @Test

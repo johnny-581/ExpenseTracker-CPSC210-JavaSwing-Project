@@ -35,7 +35,7 @@ public class ExpenseTracker implements Writable {
         return allCategories;
     }
 
-    public Category getCONC() {
+    public Category getCoNC() {
         return allCategories.get(0);
     }
 
@@ -68,7 +68,7 @@ public class ExpenseTracker implements Writable {
         Category category = expense.getCategory();
         category.removeExpense(expense);
 
-        if (category.getExpenses().isEmpty() && !category.equals(getCONC())) {
+        if (category.getExpenses().isEmpty() && !category.equals(getCoNC())) {
             allCategories.remove(category);
         }
     }

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
-import java.awt.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -58,7 +57,7 @@ public class JsonWriterTest extends JsonTest {
             et = reader.read();
             assertEquals(0, et.getAllExpenses().size());
             assertEquals(1, et.getAllCategories().size());
-            assertEquals(0, et.getCONC().getExpenses().size());
+            assertEquals(0, et.getCoNC().getExpenses().size());
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
@@ -85,7 +84,7 @@ public class JsonWriterTest extends JsonTest {
     private void checkGeneralExpenseTracker(ExpenseTracker et) {
         List<Expense> allExpenses = et.getAllExpenses();
         List<Category> allCategories = et.getAllCategories();
-        Category categoryOfNoCategory = et.getCONC();
+        Category categoryOfNoCategory = et.getCoNC();
 
         assertEquals(3, et.getAllExpenses().size());
         assertEquals(2, et.getAllCategories().size());
@@ -107,9 +106,9 @@ public class JsonWriterTest extends JsonTest {
 
     // EFFECTS: creates example expenses and categories containing them
     private void initiateExpensesAndCategories(ExpenseTracker et) {
-        expense1 = new Expense(et.getCONC(), 100);
-        expense2 = new Expense(et.getCONC(), 20);
-        expense3 = new Expense(et.getCONC(), 55);
+        expense1 = new Expense(et.getCoNC(), 100);
+        expense2 = new Expense(et.getCoNC(), 20);
+        expense3 = new Expense(et.getCoNC(), 55);
         category1 = new Category("grocery");
 
         expense1.setDate("2023-10-01");

@@ -52,19 +52,21 @@ public class PieChartPanel extends JPanel {
     // EFFECTS: draws the labels
     private void drawLabels(Graphics g, List<Category> allCategories, double total, int startAngle, int x, int y) {
         for (Category c : allCategories) {
-            double arcAngle = (int) (c.totalAmount() / total * 360 + 1);
-            double midPointAngle = Math.toRadians(startAngle + arcAngle / 2);
-            String label = c.getLabel() + " ($" + (int) c.totalAmount() + ")";
-            int labelX = (int) (x + DIAMETER / 2 + (LABEL_DISTANCE_FROM_CENTER * Math.cos(midPointAngle))
-                    - 3 * label.length());
-            int labelY = (int) (y + DIAMETER / 2 - (LABEL_DISTANCE_FROM_CENTER * Math.sin(midPointAngle)));
+            if (!(c.equals(expenseTracker.getCoNC()) && c.getExpenses().isEmpty())) {
+                double arcAngle = (int) (c.totalAmount() / total * 360 + 1);
+                double midPointAngle = Math.toRadians(startAngle + arcAngle / 2);
+                String label = c.getLabel() + " ($" + (int) c.totalAmount() + ")";
+                int labelX = (int) (x + DIAMETER / 2 + (LABEL_DISTANCE_FROM_CENTER * Math.cos(midPointAngle))
+                        - 3 * label.length());
+                int labelY = (int) (y + DIAMETER / 2 - (LABEL_DISTANCE_FROM_CENTER * Math.sin(midPointAngle)));
 
-            Font font = new Font("Arial", Font.BOLD, 15);
-            g.setFont(font);
-            g.setColor(Color.BLACK);
-            g.drawString(label, labelX, labelY);
+                Font font = new Font("Arial", Font.BOLD, 15);
+                g.setFont(font);
+                g.setColor(Color.BLACK);
+                g.drawString(label, labelX, labelY);
 
-            startAngle += (int) arcAngle;
+                startAngle += (int) arcAngle;
+            }
         }
     }
 }

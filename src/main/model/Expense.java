@@ -1,6 +1,6 @@
 package model;
 
-import Exceptions.InvalidAmountException;
+import model.exceptions.InvalidAmountException;
 import org.json.JSONObject;
 import persistence.Writable;
 
@@ -51,7 +51,7 @@ public class Expense implements Writable {
         return category;
     }
 
-    public Category getCONC() {
+    public Category getCoNC() {
         return categoryOfNoCategory;
     }
 
@@ -59,7 +59,7 @@ public class Expense implements Writable {
         double newAmount = 0;
 
         try {
-             newAmount = Double.parseDouble(amount);
+            newAmount = Double.parseDouble(amount);
         } catch (NumberFormatException e) {
             throw new InvalidAmountException();
         }
@@ -127,7 +127,9 @@ public class Expense implements Writable {
 
         if (numDaysAgo == 0) {
             daysAgoMessage = "today";
-        } if (numDaysAgo == 1) {
+        }
+
+        if (numDaysAgo == 1) {
             daysAgoMessage = "yesterday";
         }
 

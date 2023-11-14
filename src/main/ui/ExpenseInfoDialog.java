@@ -1,7 +1,7 @@
 package ui;
 
-import Exceptions.InvalidDateException;
-import Exceptions.InvalidInputException;
+import model.exceptions.InvalidDateException;
+import model.exceptions.InvalidInputException;
 import model.Category;
 import model.Expense;
 import model.ExpenseTracker;
@@ -202,7 +202,7 @@ public class ExpenseInfoDialog implements ActionListener, DocumentListener {
     // MODIFIES: this
     // EFFECTS: sets the category of the expense
     private void setCategory(String categoryLabel, Category category) {
-        boolean newExpense = !expenseTracker.getAllExpenses().contains(expense); // title.equals(NEW_EXPENSE_DIALOG_TITLE);
+        boolean newExpense = !expenseTracker.getAllExpenses().contains(expense);
         boolean categoryExists = expenseTracker.categoryExists(categoryLabel);
         Category oldCategory = expense.getCategory();
 
@@ -216,7 +216,7 @@ public class ExpenseInfoDialog implements ActionListener, DocumentListener {
             expense.getCategory().setLabel(categoryLabel);
         }
 
-        if (oldCategory.getExpenses().isEmpty() && !oldCategory.equals(expenseTracker.getCONC())) {
+        if (oldCategory.getExpenses().isEmpty() && !oldCategory.equals(expenseTracker.getCoNC())) {
             expenseTracker.deleteCategory(oldCategory);
         }
     }

@@ -1,6 +1,5 @@
 package persistence;
 
-import Exceptions.InvalidDateException;
 import model.Category;
 import model.Expense;
 import model.ExpenseTracker;
@@ -46,7 +45,7 @@ public class JsonReader {
     // EFFECTS: parses ExpenseTracker from JSON object and returns it
     private ExpenseTracker parseExpenseTracker(JSONObject jsonObject) {
         ExpenseTracker et = new ExpenseTracker();
-        et.deleteCategory(et.getCONC());
+        et.deleteCategory(et.getCoNC());
         JSONArray jsonCategories = jsonObject.getJSONArray("allCategories");
         JSONArray jsonExpenses = jsonObject.getJSONArray("allExpenses");
         addAllCategories(et, jsonCategories);
@@ -100,7 +99,7 @@ public class JsonReader {
         String categoryLabel = jsonExpense.getString("category");
         Category category = et.getCategoryFromLabel(categoryLabel);
 
-        Expense expense = new Expense(et.getCONC(), amount);
+        Expense expense = new Expense(et.getCoNC(), amount);
         expense.setDate(date);
         expense.setPlace(place);
         expense.setCategory(category);

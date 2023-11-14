@@ -101,7 +101,7 @@ public class MainGUI extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals(RECORD_STRING)) {
-            Expense expense = new Expense(expenseTracker.getCONC(), 0);
+            Expense expense = new Expense(expenseTracker.getCoNC(), 0);
             new ExpenseInfoDialog(expenseList, pieChartPanel, expenseTracker, expense, NEW_EXPENSE_DIALOG_TITLE);
         }
         if (e.getActionCommand().equals(DELETE_STRING)) {

@@ -1,4 +1,4 @@
-package Exceptions;
+package model.exceptions;
 
 public class InvalidAmountException extends InvalidInputException {
     public InvalidAmountException() {
