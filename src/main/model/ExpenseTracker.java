@@ -14,7 +14,7 @@ import java.util.List;
 // Represents an expense tracker with a list of expenses and a list of categories,
 // as well as a category that contains all expenses without a category.
 public class ExpenseTracker implements Writable {
-    public static final String LABEL_OF_NO_CATEGORY = "none";
+    public static final String LABEL_OF_NO_CATEGORY = "others";
     private final List<Expense> allExpenses;
     private final List<Category> allCategories;
 
@@ -67,10 +67,14 @@ public class ExpenseTracker implements Writable {
 
         Category category = expense.getCategory();
         category.removeExpense(expense);
+
+        if (category.getExpenses().isEmpty() && !category.equals(getCONC())) {
+            allCategories.remove(category);
+        }
     }
 
     // MODIFIES: this, category
-    // EFFECTS: deletes the given category
+    // EFFECTS: deletes the given category if it is not the category of no category
     public void deleteCategory(Category category) {
         allCategories.remove(category);
 
@@ -130,6 +134,7 @@ public class ExpenseTracker implements Writable {
     }
 
 
+    // EFFECTS: returns the expense tracker as a json object
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

@@ -1,60 +1,94 @@
 {
-  "allCategories": [
-    {
-      "iconColor": {
-        "red": 60,
-        "green": 58,
-        "blue": 126
-      },
-      "label": "none",
-      "expenses": [{
-        "date": "2023-05-01T00:00",
-        "amount": 55,
-        "place": "place3",
-        "category": "none"
-      }]
-    },
-    {
-      "iconColor": {
-        "red": 209,
-        "green": 127,
-        "blue": 25
-      },
-      "label": "grocery",
-      "expenses": [
+    "allCategories": [
         {
-          "date": "2023-10-01T00:00",
-          "amount": 100,
-          "place": "place1",
-          "category": "grocery"
+            "iconColor": {
+                "red": 200,
+                "green": 200,
+                "blue": 200
+            },
+            "label": "others",
+            "expenses": [
+                {
+                    "date": "2023-11-13T00:00",
+                    "amount": 35,
+                    "place": "unknown place",
+                    "category": "others"
+                },
+                {
+                    "date": "2023-05-01T00:00",
+                    "amount": 55,
+                    "place": "place3",
+                    "category": "others"
+                }
+            ]
         },
         {
-          "date": "2023-01-01T00:00",
-          "amount": 20,
-          "place": "place2",
-          "category": "grocery"
+            "iconColor": {
+                "red": 209,
+                "green": 127,
+                "blue": 25
+            },
+            "label": "grocery",
+            "expenses": [
+                {
+                    "date": "2023-10-01T00:00",
+                    "amount": 100,
+                    "place": "place1",
+                    "category": "grocery"
+                },
+                {
+                    "date": "2023-01-01T00:00",
+                    "amount": 20,
+                    "place": "place2",
+                    "category": "grocery"
+                }
+            ]
+        },
+        {
+            "iconColor": {
+                "red": 194,
+                "green": 57,
+                "blue": 74
+            },
+            "label": "clothing",
+            "expenses": [{
+                "date": "2023-11-14T00:00",
+                "amount": 57,
+                "place": "ubc",
+                "category": "clothing"
+            }]
         }
-      ]
-    }
-  ],
-  "allExpenses": [
-    {
-      "date": "2023-10-01T00:00",
-      "amount": 100,
-      "place": "place1",
-      "category": "grocery"
-    },
-    {
-      "date": "2023-05-01T00:00",
-      "amount": 55,
-      "place": "place3",
-      "category": "none"
-    },
-    {
-      "date": "2023-01-01T00:00",
-      "amount": 20,
-      "place": "place2",
-      "category": "grocery"
-    }
-  ]
+    ],
+    "allExpenses": [
+        {
+            "date": "2023-11-14T00:00",
+            "amount": 57,
+            "place": "ubc",
+            "category": "clothing"
+        },
+        {
+            "date": "2023-11-13T00:00",
+            "amount": 35,
+            "place": "unknown place",
+            "category": "others"
+        },
+        {
+            "date": "2023-10-01T00:00",
+            "amount": 100,
+            "place": "place1",
+            "category": "grocery"
+        },
+        {
+            "date": "2023-05-01T00:00",
+            "amount": 55,
+            "place": "place3",
+            "category": "others"
+        },
+        {
+            "date": "2023-01-01T00:00",
+            "amount": 20,
+            "place": "place2",
+            "category": "grocery"
+        }
+    ]
 }

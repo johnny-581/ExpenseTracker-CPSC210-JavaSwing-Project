@@ -90,9 +90,6 @@ public class CategoryTest {
         assertTrue(testCategory.contains(E1));
         assertFalse(testCategory.contains(E2));
         assertTrue(testCategory.contains(E3));
-        assertFalse(categoryOfNoCategory.contains(E1));
-        assertTrue(categoryOfNoCategory.contains(E2));
-        assertFalse(categoryOfNoCategory.contains(E3));
         assertEquals(testCategory, E1.getCategory());
         assertEquals(categoryOfNoCategory, E2.getCategory());
         assertEquals(testCategory, E3.getCategory());

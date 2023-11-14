@@ -20,13 +20,14 @@ import static model.Expense.NAME_OF_NO_PLACE;
 public class ExpenseInfoDialog implements ActionListener, DocumentListener {
     private static final String FINISH_STRING = "Finish";
 
-    private ExpenseList expenseList;
-    private ExpenseTracker expenseTracker;
-    private Expense expense;
-    private JDialog dialog;
-    private JPanel contentPanel;
-    private JButton finishButton;
-    private JLabel statusLabel;
+    private final ExpenseList expenseList;
+    private final PieChartPanel pieChartPanel;
+    private final ExpenseTracker expenseTracker;
+    private final Expense expense;
+    private final JDialog dialog;
+    private final JPanel contentPanel;
+    private final JButton finishButton;
+    private final JLabel statusLabel;
 
     private JTextField amountField;
     private JTextField dateField;
@@ -35,8 +36,10 @@ public class ExpenseInfoDialog implements ActionListener, DocumentListener {
 
     // EFFECTS: constructs and displays an expense info dialog, where the user can edit the
     //          amount, date, place, and category of an expense.
-    public ExpenseInfoDialog(ExpenseList expenseList, ExpenseTracker expenseTracker, Expense expense, String title) {
+    public ExpenseInfoDialog(ExpenseList expenseList, PieChartPanel pieChartPanel,
+                             ExpenseTracker expenseTracker, Expense expense, String title) {
         this.expenseList = expenseList;
+        this.pieChartPanel = pieChartPanel;
         this.expenseTracker = expenseTracker;
         this.expense = expense;
         this.dialog = new JDialog();
@@ -50,6 +53,8 @@ public class ExpenseInfoDialog implements ActionListener, DocumentListener {
         initiateDialog(title);
     }
 
+    // MODIFIES: this
+    // EFFECTS: initiates the dialog frame
     private void initiateDialog(String title) {
         dialog.setTitle(title);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -61,6 +66,7 @@ public class ExpenseInfoDialog implements ActionListener, DocumentListener {
         dialog.setVisible(true);
     }
 
+    // MODIFIES: this
     // EFFECTS: adds components to the content panel
     private void buildContentPane() {
         contentPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
@@ -80,6 +86,7 @@ public class ExpenseInfoDialog implements ActionListener, DocumentListener {
         contentPanel.repaint();
     }
 
+    // MODIFIES: this
     // EFFECTS: adds input panel with labels and text fields to the contentPane
     private void addInputPanel() {
         JLabel amountLabel = new JLabel("Amount:");
@@ -108,7 +115,7 @@ public class ExpenseInfoDialog implements ActionListener, DocumentListener {
     // MODIFIES: this
     // EFFECTS: sets up the categoryComboBox
     private void createCategoryComboBox() {
-        DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel();
+        DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
 
         for (Category c : expenseTracker.getAllCategories()) {
             comboBoxModel.addElement(c.getLabel());
@@ -159,6 +166,7 @@ public class ExpenseInfoDialog implements ActionListener, DocumentListener {
             int index = expenseList.getList().getSelectedIndex();
             expenseList.updateExpenses();
             expenseList.getList().setSelectedIndex(index);
+            pieChartPanel.repaint();
             dialog.dispose();
         } else {
             Toolkit.getDefaultToolkit().beep();
@@ -166,7 +174,7 @@ public class ExpenseInfoDialog implements ActionListener, DocumentListener {
     }
 
     // MODIFIES: this
-    // EFFECTS: sets the expense according to user input
+    // EFFECTS: sets the expense information according to user input
     private boolean setExpenseAccordingToInput(String amount, String date, String place,
                                             String categoryLabel, Category category) {
         try {
@@ -194,12 +202,23 @@ public class ExpenseInfoDialog implements ActionListener, DocumentListener {
     // MODIFIES: this
     // EFFECTS: sets the category of the expense
     private void setCategory(String categoryLabel, Category category) {
-        if (category == null) {
+        boolean newExpense = !expenseTracker.getAllExpenses().contains(expense); // title.equals(NEW_EXPENSE_DIALOG_TITLE);
+        boolean categoryExists = expenseTracker.categoryExists(categoryLabel);
+        Category oldCategory = expense.getCategory();
+
+        if (categoryExists) {
+            expense.setCategory(category);
+        } else if (newExpense) {
             category = new Category(categoryLabel);
             expenseTracker.addCategory(category);
+            expense.setCategory(category);
+        } else {
+            expense.getCategory().setLabel(categoryLabel);
         }
 
-        expense.setCategory(category);
+        if (oldCategory.getExpenses().isEmpty() && !oldCategory.equals(expenseTracker.getCONC())) {
+            expenseTracker.deleteCategory(oldCategory);
+        }
     }
 
     // MODIFIES: this

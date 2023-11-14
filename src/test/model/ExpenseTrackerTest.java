@@ -3,7 +3,6 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -102,6 +101,24 @@ public class ExpenseTrackerTest {
         List<Expense> categoryExpenses = category1.getExpenses();
         assertEquals(1, categoryExpenses.size());
         assertFalse(categoryExpenses.contains(expense1));
+    }
+
+    @Test
+    public void testDeleteExpenseEmpty() {
+        initiateExpensesAndCategories();
+        addExpensesAndCategories();
+        addExpensesToCategories();
+        expenseTracker.deleteExpense(0);
+        expenseTracker.deleteExpense(0);
+        expenseTracker.deleteExpense(0);
+
+        List<Expense> allExpenses = expenseTracker.getAllExpenses();
+        assertEquals(0, allExpenses.size());
+        assertFalse(allExpenses.contains(expense1));
+
+        List<Expense> categoryExpenses = category1.getExpenses();
+        assertEquals(0, categoryExpenses.size());
+        assertFalse(expenseTracker.categoryExists("grocery"));
     }
 
     @Test

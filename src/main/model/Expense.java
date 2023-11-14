@@ -1,7 +1,6 @@
 package model;
 
 import Exceptions.InvalidAmountException;
-import Exceptions.InvalidDateException;
 import org.json.JSONObject;
 import persistence.Writable;
 
@@ -16,7 +15,7 @@ import java.time.temporal.ChronoUnit;
 // (Class X) Represents the record of an expense
 public class Expense implements Writable {
     public static final String NAME_OF_NO_PLACE = "unknown place";
-    public static final int ICON_DIAMETER = 10;
+    public static final int ICON_DIAMETER = 15;
 
     private double amount;
     private LocalDateTime date;
@@ -113,10 +112,6 @@ public class Expense implements Writable {
         if (oldCategory.contains(this)) {
             oldCategory.removeExpense(this);
         }
-
-        if (!categoryOfNoCategory.contains(this)) {
-            categoryOfNoCategory.addExpense(this);
-        }
     }
 
     // EFFECTS: returns the period in days from the date of the expense to today
@@ -136,10 +131,8 @@ public class Expense implements Writable {
             daysAgoMessage = "yesterday";
         }
 
-        LocalDate date = this.date.toLocalDate();
-        return daysAgoMessage + " (" + date + ") you spent $"
-                + amount + " at \"" + place + "\"" + " in the category \""
-                + category.getLabel() + "\"";
+        return "  " + daysAgoMessage + " you spent $"
+                + amount + " at \"" + place + "\"";
     }
 
     // EFFECTS: returns a filled circle with a color representing the expense's category
@@ -153,6 +146,7 @@ public class Expense implements Writable {
         return new ImageIcon(icon);
     }
 
+    // EFFECTS: returns the expense as a json object
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

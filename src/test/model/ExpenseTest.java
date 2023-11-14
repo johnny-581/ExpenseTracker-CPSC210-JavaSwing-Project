@@ -43,7 +43,6 @@ class ExpenseTest {
         E1.setCategory(C1);
         E1.removeCategory();
         assertEquals(categoryOfNoCategory, E1.getCategory());
-        assertTrue(categoryOfNoCategory.contains(E1));
         assertFalse(C1.contains(E1));
     }
 
@@ -73,8 +72,7 @@ class ExpenseTest {
         E1.setDate(today.toString());
         E1.setPlace("ubc");
         E1.setCategory(C1);
-        assertEquals("today (" + today + ") you spent $100.0 at \"ubc\"" +
-                " in the category \"clothing\"", E1.getSummary());
+        assertEquals("  today you spent $100.0 at \"ubc\"", E1.getSummary());
     }
 
     @Test
@@ -83,8 +81,7 @@ class ExpenseTest {
         E1.setDate(yesterday.toString());
         E1.setPlace("ubc");
         E1.setCategory(C1);
-        assertEquals("yesterday (" + yesterday + ") you spent $100.0 at \"ubc\"" +
-                " in the category \"clothing\"", E1.getSummary());
+        assertEquals("  yesterday you spent $100.0 at \"ubc\"", E1.getSummary());
     }
 
     @Test
@@ -93,7 +90,6 @@ class ExpenseTest {
         E1.setDate(threeDaysAgo.toString());
         E1.setPlace("ubc");
         E1.setCategory(C1);
-        assertEquals("3 days ago (" + threeDaysAgo + ") you spent $100.0 at \"ubc\"" +
-                " in the category \"clothing\"", E1.getSummary());
+        assertEquals("  3 days ago you spent $100.0 at \"ubc\"", E1.getSummary());
     }
 }

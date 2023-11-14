@@ -10,8 +10,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+import static model.ExpenseTracker.LABEL_OF_NO_CATEGORY;
+
 // (Class Y) Represents a expense category with a list of Expenses in this category
 public class Category implements Writable {
+    private static final int COLOR_OF_NO_CATEGORY = 200;
     private String label;
     private final List<Expense> expenses;
     private Color iconColor;
@@ -91,7 +94,9 @@ public class Category implements Writable {
         int green = random.nextInt(256);
         int blue = random.nextInt(256);
 
-        return new Color(red, green, blue);
+        return (label.equals(LABEL_OF_NO_CATEGORY)) ?
+                new Color(COLOR_OF_NO_CATEGORY, COLOR_OF_NO_CATEGORY, COLOR_OF_NO_CATEGORY) :
+                new Color(red, green, blue);
     }
 
 
@@ -117,6 +122,7 @@ public class Category implements Writable {
         return jsonArray;
     }
 
+    // EFFECTS: returns the category as a json object
     private JSONObject createColorJsonObject(Color color) {
         JSONObject colorJson = new JSONObject();
 

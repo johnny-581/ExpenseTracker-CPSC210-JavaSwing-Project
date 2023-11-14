@@ -6,12 +6,12 @@
                 "green": 58,
                 "blue": 126
             },
-            "label": "none",
+            "label": "others",
             "expenses": [{
                 "date": "2023-05-01T00:00",
                 "amount": 55,
                 "place": "place3",
-                "category": "none"
+                "category": "others"
             }]
         },
         {
@@ -48,7 +48,7 @@
             "date": "2023-05-01T00:00",
             "amount": 55,
             "place": "place3",
-            "category": "none"
+            "category": "others"
         },
         {
             "date": "2023-01-01T00:00",
