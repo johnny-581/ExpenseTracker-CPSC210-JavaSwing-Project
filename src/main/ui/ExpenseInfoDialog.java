@@ -1,7 +1,7 @@
 package ui;
 
-import model.exceptions.InvalidDateException;
-import model.exceptions.InvalidInputException;
+import exceptions.InvalidDateException;
+import exceptions.InvalidInputException;
 import model.Category;
 import model.Expense;
 import model.ExpenseTracker;

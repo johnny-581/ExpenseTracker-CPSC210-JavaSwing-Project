@@ -1,8 +1,10 @@
 package model;
 
+import exceptions.InvalidAmountException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.*;
 import java.time.LocalDate;
 
 import static model.Expense.NAME_OF_NO_PLACE;
@@ -31,6 +33,39 @@ class ExpenseTest {
     }
 
     @Test
+    public void testSetAmountValid() {
+        try {
+            E1.setAmount("200");
+            assertEquals(200, E1.getAmount());
+            // expected
+        } catch (InvalidAmountException e) {
+            fail("unexpected");
+        }
+    }
+
+    @Test
+    public void testSetAmountWrongFormat() {
+        try {
+            E1.setAmount("idd");
+            fail("should throw exception");
+        } catch (InvalidAmountException e) {
+            // expected
+        }
+        assertEquals(100, E1.getAmount());
+    }
+
+    @Test
+    public void testSetAmountNegativeAmount() {
+        try {
+            E1.setAmount("-39");
+            fail("should throw exception");
+        } catch (InvalidAmountException e) {
+            // expected
+        }
+        assertEquals(100, E1.getAmount());
+    }
+
+    @Test
     public void testSetCategory() {
         E1.setCategory(C1);
         assertEquals(C1, E1.getCategory());
@@ -45,7 +80,6 @@ class ExpenseTest {
         assertEquals(categoryOfNoCategory, E1.getCategory());
         assertFalse(C1.contains(E1));
     }
-
 
     @Test
     public void testSetNoPlace() {
@@ -91,5 +125,10 @@ class ExpenseTest {
         E1.setPlace("ubc");
         E1.setCategory(C1);
         assertEquals("  3 days ago you spent $100.0 at \"ubc\"", E1.getSummary());
+    }
+
+    @Test
+    public void testGetIcon() {
+        assertTrue(E1.getIcon() instanceof ImageIcon);
     }
 }
