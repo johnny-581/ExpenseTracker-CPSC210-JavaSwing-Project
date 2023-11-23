@@ -119,6 +119,11 @@ public class ExpenseTrackerTest {
         List<Expense> categoryExpenses = category1.getExpenses();
         assertEquals(0, categoryExpenses.size());
         assertFalse(expenseTracker.categoryExists("grocery"));
+
+        List<Category> allCategories = expenseTracker.getAllCategories();
+        assertEquals(2, allCategories.size());
+        assertTrue(allCategories.contains(categoryOfNoCategory));
+        assertTrue(allCategories.contains(category3));
     }
 
     @Test

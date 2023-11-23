@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ExpenseTest {
     Expense E1;
     Category C1;
+    Category C2;
     public Category categoryOfNoCategory;
 
     @BeforeEach
@@ -21,6 +22,7 @@ class ExpenseTest {
         categoryOfNoCategory = new Category(LABEL_OF_NO_CATEGORY);
         E1 = new Expense(categoryOfNoCategory, 100);
         C1 = new Category("clothing");
+        C2 = new Category("grocery");
     }
 
     @Test
@@ -69,7 +71,17 @@ class ExpenseTest {
     public void testSetCategory() {
         E1.setCategory(C1);
         assertEquals(C1, E1.getCategory());
-        assertTrue(C1.getExpenses().contains(E1));
+        assertTrue(C1.contains(E1));
+        assertFalse(categoryOfNoCategory.contains(E1));
+    }
+
+    @Test
+    public void testSetCategoryInAnotherCategory() {
+        E1.setCategory(C1);
+        E1.setCategory(C2);
+        assertEquals(C2, E1.getCategory());
+        assertFalse(C1.contains(E1));
+        assertTrue(C2.contains(E1));
         assertFalse(categoryOfNoCategory.contains(E1));
     }
 

@@ -71,6 +71,7 @@ public class ExpenseList implements ListSelectionListener {
         }
     }
 
+    // Not useful
     @Override
     public void valueChanged(ListSelectionEvent e) {
 

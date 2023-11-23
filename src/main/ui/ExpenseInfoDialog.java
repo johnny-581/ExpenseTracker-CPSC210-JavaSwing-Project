@@ -235,18 +235,15 @@ public class ExpenseInfoDialog implements ActionListener, DocumentListener {
         }
     }
 
+    // Not useful
     @Override
-    public void insertUpdate(DocumentEvent e) {
+    public void insertUpdate(DocumentEvent e) {}
 
-    }
-
+    // Not useful
     @Override
-    public void removeUpdate(DocumentEvent e) {
+    public void removeUpdate(DocumentEvent e) {}
 
-    }
-
+    // Not useful
     @Override
-    public void changedUpdate(DocumentEvent e) {
-
-    }
+    public void changedUpdate(DocumentEvent e) {}
 }
