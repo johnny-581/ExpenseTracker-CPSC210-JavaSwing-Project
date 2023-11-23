@@ -15,7 +15,7 @@ use similar expense tracking apps on my phone, but have found them to be
 too complicated to use. I want to create a more customizable and simple
 expense tracker that can let me clearly see all the important information on one
 page. Anyone can use this application if they want an insight into their
-spending habits, which may likely be true for many students like me.
+spending habits.
 
 ## User Stories
 ### Expenses
