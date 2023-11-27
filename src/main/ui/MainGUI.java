@@ -1,7 +1,9 @@
 package ui;
 
+import model.EventLog;
 import model.Expense;
 import model.ExpenseTracker;
+import model.Event;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -121,6 +123,11 @@ public class MainGUI extends JPanel implements ActionListener {
             @Override
             public void windowClosing(WindowEvent e) {
                 askToSaveChanges();
+
+                EventLog el = EventLog.getInstance();
+                for (Event event : el) {
+                    System.out.println(event.toString() + "\n");
+                }
             }
         };
     }

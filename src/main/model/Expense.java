@@ -33,6 +33,8 @@ public class Expense implements Writable {
         this.category = categoryOfNoCategory;
         categoryOfNoCategory.addExpense(this);
         this.categoryOfNoCategory = categoryOfNoCategory;
+
+        EventLog.getInstance().logEvent(new Event("Expense recorded: $" + amount));
     }
 
     public double getAmount() {
