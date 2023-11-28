@@ -97,3 +97,19 @@ Expense deleted: $20.0
 
 Mon Nov 27 18:42:51 PST 2023  
 Expense deleted: $10.0
+
+### Task 3 (Reflection and Refactoring)
+If I have more time, I will refactor the way how the "categoryOfNoCategory" in my program is handled. 
+categoryOfNoCategory is of type Category, and it represents a trash-bin Category that contains all the
+expenses without a category. When an expense is not yet assigned a category when it was initially created,
+it is in the categoryOfNoCategory by default, so Each expense must know about the categoryOfNoCategory.
+Also, there can be one and only one categoryOfNoCategory in the whole program. 
+Currently, I am just creating the categoryOfNoCategory as a normal category with a special label 
+in the constructor of the ExpenseTracker.
+It is passed as a parameter to Every new expense created. I even have a getter for it,
+so that it can be frequently accessed from the ui package.
+
+After learning the Singleton design pattern, I realized it can be used to greatly improve my design.
+I can make a CategoryOfNoCategory class that extends Category and implements the Singleton pattern.
+This way, I can just call CategoryOfNoCategory.getInstance() whenever I need to access it,
+and there's no need to pass the categoryOfNoCategory to all the expenses or to pass it all around in the ui.
