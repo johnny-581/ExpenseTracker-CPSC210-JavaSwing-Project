@@ -3,7 +3,6 @@ package ui;
 import model.EventLog;
 import model.Expense;
 import model.ExpenseTracker;
-import model.Event;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
