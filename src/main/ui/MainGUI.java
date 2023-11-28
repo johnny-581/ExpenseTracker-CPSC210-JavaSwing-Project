@@ -1,5 +1,6 @@
 package ui;
 
+import model.Event;
 import model.EventLog;
 import model.Expense;
 import model.ExpenseTracker;
