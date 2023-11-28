@@ -1,9 +1,9 @@
 {
     "allCategories": [{
         "iconColor": {
-            "red": 192,
-            "green": 92,
-            "blue": 183
+            "red": 200,
+            "green": 200,
+            "blue": 200
         },
         "label": "others",
         "expenses": []

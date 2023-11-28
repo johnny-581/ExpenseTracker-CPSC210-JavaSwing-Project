@@ -2,9 +2,9 @@
     "allCategories": [
         {
             "iconColor": {
-                "red": 60,
-                "green": 58,
-                "blue": 126
+                "red": 200,
+                "green": 200,
+                "blue": 200
             },
             "label": "others",
             "expenses": [{
@@ -16,9 +16,9 @@
         },
         {
             "iconColor": {
-                "red": 209,
-                "green": 127,
-                "blue": 25
+                "red": 79,
+                "green": 64,
+                "blue": 62
             },
             "label": "grocery",
             "expenses": [

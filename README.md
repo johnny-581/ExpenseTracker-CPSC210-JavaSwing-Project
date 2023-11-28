@@ -71,3 +71,29 @@ To load data from file, choose the "yes" option when prompted on startup.
 
 ### Save Changes
 To save changes, choose the "yes" option when prompted on quitting.
+
+## Phase 4
+### Task 2 (Sample Event Log)
+Mon Nov 27 18:42:33 PST 2023  
+Category created: others
+
+Mon Nov 27 18:42:39 PST 2023  
+Expense recorded/edited: $10.0
+
+Mon Nov 27 18:42:48 PST 2023  
+Category created: food
+
+Mon Nov 27 18:42:48 PST 2023  
+Expense of $20.0 added to category: food
+
+Mon Nov 27 18:42:48 PST 2023  
+Expense recorded/edited: $20.0
+
+Mon Nov 27 18:42:51 PST 2023  
+Expense of $20.0 removed from category: food
+
+Mon Nov 27 18:42:51 PST 2023  
+Expense deleted: $20.0
+
+Mon Nov 27 18:42:51 PST 2023  
+Expense deleted: $10.0

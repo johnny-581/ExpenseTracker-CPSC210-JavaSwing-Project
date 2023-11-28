@@ -23,7 +23,6 @@ public class Category implements Writable {
         this.label = label;
         this.expenses = new ArrayList<>();
         this.iconColor = generateRandomColor();
-        EventLog.getInstance().logEvent(new Event("Category created: " + label));
     }
 
     public String getLabel() {
@@ -60,8 +59,10 @@ public class Category implements Writable {
             e.setCategory(this);
         }
 
-        EventLog.getInstance().logEvent(new Event("Expense of $" + e.getAmount()
-                + " added to category: " + label));
+        if (!label.equals(LABEL_OF_NO_CATEGORY)) {
+            EventLog.getInstance().logEvent(new Event("Expense of $" + e.getAmount()
+                    + " added to category: " + label));
+        }
     }
 
     // MODIFIES: this
@@ -73,8 +74,10 @@ public class Category implements Writable {
             e.removeCategory();
         }
 
-        EventLog.getInstance().logEvent(new Event("Expense of $" + e.getAmount()
-                + " removed from category: " + label));
+        if (!label.equals(LABEL_OF_NO_CATEGORY)) {
+            EventLog.getInstance().logEvent(new Event("Expense of $" + e.getAmount()
+                    + " removed from category: " + label));
+        }
     }
 
     // EFFECTS: returns true if the given expense is in the category

@@ -51,12 +51,16 @@ public class ExpenseTracker implements Writable {
         allExpenses.add(expense);
         allExpenses.sort(Comparator.comparing(Expense::getDate));
         Collections.reverse(allExpenses);
+
+        EventLog.getInstance().logEvent(new Event("Expense recorded/edited: $" + expense.getAmount()));
     }
 
     // MODIFIES: this
     // EFFECTS: adds the given category to the expense tracker
     public void addCategory(Category category) {
         allCategories.add(category);
+
+        EventLog.getInstance().logEvent(new Event("Category created: " + category.getLabel()));
     }
 
     // MODIFIES: this, expense
@@ -71,6 +75,8 @@ public class ExpenseTracker implements Writable {
         if (category.getExpenses().isEmpty() && !category.equals(getCoNC())) {
             allCategories.remove(category);
         }
+
+        EventLog.getInstance().logEvent(new Event("Expense deleted: $" + expense.getAmount()));
     }
 
     // MODIFIES: this, category
@@ -81,6 +87,8 @@ public class ExpenseTracker implements Writable {
         for (Expense e : category.getExpenses()) {
             e.removeCategory();
         }
+
+        EventLog.getInstance().logEvent(new Event("Category deleted: " + category.getLabel()));
     }
 
     // EFFECTS: returns ture if no expenses are created yet (allExpenses is empty)
