@@ -17,6 +17,8 @@ expense tracker that can let me clearly see all the important information on one
 page. Anyone can use this application if they want an insight into their
 spending habits.
 
+![](./UIScreenShot.jpeg)
+
 ## User Stories
 ### Expenses
 - As a user, I want to be able to record an expense (eg. $10) and to set
@@ -28,7 +30,7 @@ spending habits.
 
 ### Categories
 - As a user, I want to be able to create a new category with a chosen label
-- - As a user, I want to be able to change the label of a category
+- As a user, I want to be able to change the label of a category
 - As a user, I want to be able to view a list of all categories and to see a
   list of expenses in each category
 - as a user, I want to be able to see the percentage and amount of money I spent in
