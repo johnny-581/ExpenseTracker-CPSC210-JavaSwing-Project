@@ -8,7 +8,7 @@ categories such as grocery, clothing, or tuition, and pie chart summarizing your
 categorical expenses can be seen at the top of the main window.
 Towards the bottom of the window, you can view a list of all expenses you have recorded. You can 
 record a new expense by clicking on a "record" button, delete an expense by selecting it and clicking on
-a "delete" button, or edit an expense by double-clicking on it in the expense list.
+a "delete" button, or edit an expense by double-clicking on it in the expense list. 
 
 Myself would be a potential user of this expense tracker. I have tried to
 use similar expense tracking apps on my phone, but have found them to be
